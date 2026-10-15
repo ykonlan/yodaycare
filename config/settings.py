@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "users",
     "daily_details",
-    "wards"
+    "wards",
+    "pages"
 ]
 
 MIDDLEWARE = [
