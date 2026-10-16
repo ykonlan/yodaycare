@@ -13,5 +13,5 @@ class HomepageTests(SimpleTestCase):
 
     def test_check_template_used(self):
          response = self.client.get(reverse("pages:login"))
-         self.assertTemplateUsed(response, "index.html")
+         self.assertTemplateUsed(response, "pages/index.html")
 
