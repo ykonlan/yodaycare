@@ -11,3 +11,7 @@ class HomepageTests(SimpleTestCase):
             response = self.client.get(reverse("pages:login"))
             self.assertEqual(response.status_code, 200)
 
+    def test_check_template_used(self):
+         response = self.client.get(reverse("pages:login"))
+         self.assertTemplateUsed(response, "index.html")
+
