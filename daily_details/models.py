@@ -44,6 +44,9 @@ class DailyDetails(models.Model):
         related_name="daily_details"
     )
 
+    def __str__(self):
+        return f"{self.daily_details_ward} - {self.daily_details_date}"
+
     class Meta:
         constraints = [
             models.UniqueConstraint(

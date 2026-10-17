@@ -17,6 +17,9 @@ class Classroom(models.Model):
         max_length=100
     )
 
+    def __str__(self):
+        return self.class_name
+
 
 class Ward(models.Model):
     ward_name = models.CharField(
@@ -42,6 +45,9 @@ class Ward(models.Model):
         verbose_name="Ward Class",
         on_delete=models.SET_NULL
     )
+
+    def __str__(self):
+        return self.ward_name
 
 class Allergy(models.Model):
     allergy_substance = models.CharField(
@@ -75,3 +81,6 @@ class Allergy(models.Model):
         on_delete=models.CASCADE,
         related_name="allergies"
     )
+
+    def __str__(self):
+        return f"{self.allergy_substance} ({self.allergy_ward.ward_name})"
