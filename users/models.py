@@ -24,4 +24,22 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"    
 
+
+class StaffProfile(models.Model):
+    staff = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Staff",
+        related_name="staff"
+    )
+
+    staff_classroom = models.ForeignKey(
+        "wards.Classroom",
+        verbose_name="Classroom",
+        related_name="staff",
+        on_delete=models.PROTECT
+    )
+
+    def __str__(self):
+        return f"{self.staff.first_name} {self.staff.last_name}"
     

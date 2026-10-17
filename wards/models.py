@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.validators import MinValueValidator
-from users.models import UserProfile
 from wards.validators import validator_for_name
 
 # Create your models here.
@@ -33,7 +32,7 @@ class Ward(models.Model):
     )
 
     ward_parent = models.ForeignKey(
-        UserProfile,
+        "users.UserProfile",
         verbose_name="Parent",
         related_name="wards",
         on_delete=models.PROTECT
