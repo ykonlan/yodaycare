@@ -30,7 +30,7 @@ class StaffProfile(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name="Staff",
-        related_name="staff"
+        related_name="staff_profile"
     )
 
     staff_classroom = models.ForeignKey(
