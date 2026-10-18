@@ -25,22 +25,22 @@ class AllStaffView(ListView):
 class CustomLoginView(auth_views.LoginView):
     def get_success_url(self):
         user = self.request.user
-        if user.groups.filter("Administrators").exists():
+        if user.groups.filter(name="Administrators").exists():
             return reverse_lazy("admin-dashboard")
-        if user.groups.filter("Staff").exists():
+        if user.groups.filter(name="Staff").exists():
             return reverse_lazy("staff-dashboard")
-        if user.groups.filter("Parents").exists():
+        if user.groups.filter(name="Parents").exists():
             return reverse_lazy("parent-dashboard")
         return super().get_success_url()
 
 class ProfileDashboard(View):
     def get(self, request):
         user = self.request.user
-        if user.groups.filter("Administrators").exists():
+        if user.groups.filter(name="Administrators").exists():
             return render(request, "staff/admin-dashboard.html")
-        elif user.groups.filter("Staff").exists():
+        elif user.groups.filter(name="Staff").exists():
             return render(request, "staff/staff-dashboard.html")
-        elif user.groups.filter("Parents").exists():
+        elif user.groups.filter(name="Parents").exists():
             return render(request, "parents/dashboard.html")
 
 
