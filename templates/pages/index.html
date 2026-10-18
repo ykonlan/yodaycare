@@ -6,6 +6,10 @@
     <title>YoDaycareLogin</title>
 </head>
 <body>
-    
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Log In</button>
+    </form>
 </body>
 </html>

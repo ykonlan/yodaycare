@@ -2,6 +2,6 @@ from django.urls import path
 from wards.views import AllWardsView
 
 urlpatterns = [
-    path("all/", AllWardsView.as_view()),
+    path("all/", AllWardsView.as_view(), name="wards-view-all"),
     
 ]
