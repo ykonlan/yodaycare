@@ -42,7 +42,9 @@
                 <button id="close-modal">&times;</button>
             </div>
 
-            <form action="POST">
+            <form action="{% url 'create-new-user' user_type='parent' %}" method="POST">
+                {% csrf_token %}
+
                 {{new_user_form.as_p}}
 
                 {{new_user_profile_form.as_p}}

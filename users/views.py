@@ -70,10 +70,10 @@ class ProfileDashboard(View):
 class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         user = self.request.user
-        return user.groups.filter(groups__name="Administrators").exists()
+        return user.groups.filter(name="Administrators").exists()
 
     def post(self, request, *args, **kwargs):
-        user_type = args[0]
+        user_type = self.kwargs["user_type"]
         msg = None
         user_form = AddUserForm(request.POST)
         user_profile_form = AddUserProfileForm(request.POST)
@@ -94,6 +94,8 @@ class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, View):
                         msg = f"New User {request.POST.get('first_name')} {request.POST.get('last_name')} created successfully!"
 
                     if user_type == "staff":
+                        staff_group = Group.objects.get(name="staff")
+                        new_user.groups.add(staff_group)
                         staff_profile_form = StaffProfileForm(request.POST)
                         if staff_profile_form.is_valid():
                             staff_class = staff_profile_form.cleaned_data["staff_classroom"]
@@ -101,6 +103,10 @@ class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, View):
                             new_staff_profile.save()
                             if new_staff_profile.pk:
                                 msg = "\n".join([msg, f"{request.POST.get('first_name')} {request.POST.get('last_name')} has been assigned the class {staff_class.class_name}"])
+
+                    elif user_type == "parent":
+                        parent_group = Group.objects.get(name="parents")
+                        new_user.groups.add(parent_group)
             return render(request, "admin/create-new-user.html", {"user_form": user_form, "user_profile_form": user_profile_form, "msg":msg})
         else:
             return redirect("dashboard")
