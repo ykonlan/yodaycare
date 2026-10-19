@@ -43,6 +43,15 @@ class AllStaffView(LoginRequiredMixin, UserPassesTestMixin, ListView):
             user = self.request.user
             return user.groups.filter(name="Administrators").exists()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["new_user_form"] = AddUserForm()
+        context["new_user_profile_form"] = AddUserProfileForm()
+        context["new_staff_form"] = StaffProfileForm()
+        return context
+
+    
+
 
 class CustomLoginView(auth_views.LoginView):
     def get_success_url(self):
