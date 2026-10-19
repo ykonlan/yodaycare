@@ -1,0 +1,27 @@
+#modal{
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#modal-content{
+    background-color: white;
+    padding: 24px;
+}
+
+#close-modal{
+    justify-self: flex-end;
+}
+
+.modal-header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#modal.show{
+    display: flex;
+}

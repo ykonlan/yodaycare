@@ -1,11 +1,18 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View All Parents</title>
+    <link rel="stylesheet" href="{% static 'users/css/view-all-parents.css' %}">
+    <script src="{% static 'users/js/view-all-parents.js' %}" defer></script>
 </head>
 <body>
+    <button id="add-parent">
+        Add Parent
+    </button>
     <table>
         <tr>
             <th>ID</th>
@@ -18,14 +25,36 @@
 
         {% for parent in parents %}
             <tr>
-                <th>{{parent.id}}</th>
-                <th>{{parent.first_name}}</th>
-                <th>{{parent.last_name}}</th>
-                <th>{{parent.email}}</th>
-                <th>{{parent.profile.user_phone_1}}</th>
-                <th>{{parent.profile.user_phone_2}}</th>
+                <td>{{parent.id}}</td>
+                <td>{{parent.first_name}}</td>
+                <td>{{parent.last_name}}</td>
+                <td>{{parent.email}}</td>
+                <td>{{parent.profile.user_phone_1}}</td>
+                <td>{{parent.profile.user_phone_2}}</td>
             </tr>
         {% endfor %}
     </table>
+
+    <div id="modal">
+        <div id="modal-content">
+            <div class="modal-header">
+                Add Parent
+                <button id="close-modal">&times;</button>
+            </div>
+
+            <form action="POST">
+                {{new_user_form.as_p}}
+
+                {{new_user_profile_form.as_p}}
+
+                <button type="submit">Add Parent</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
+
+
+<script>
+
+</script>
