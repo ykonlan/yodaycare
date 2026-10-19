@@ -6,6 +6,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(
         User,
         verbose_name="User",
+        null=False,
         on_delete=models.CASCADE,
         related_name="profile"
     )
@@ -30,7 +31,8 @@ class StaffProfile(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name="Staff",
-        related_name="staff_profile"
+        related_name="staff_profile",
+        null=False
     )
 
     staff_classroom = models.ForeignKey(
