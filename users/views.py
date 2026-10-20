@@ -9,6 +9,7 @@ from users.forms import AddUserForm, AddUserProfileForm, StaffProfileForm
 from users.models import UserProfile, StaffProfile
 from django.db import transaction
 from django.shortcuts import redirect
+from django.contrib import messages
 
 # Create your views here.
 class AllParentsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -92,7 +93,9 @@ class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, View):
                     )
                     new_user_profile.save()
                     if new_user_profile.pk:
-                        msg = f"New User {request.POST.get('first_name')} {request.POST.get('last_name')} created successfully!"
+                        if user_type != "staff":
+                            msg = f"New User {request.POST.get('first_name')} {request.POST.get('last_name')} created successfully!"
+                            messages.success(request, msg)
 
                     if user_type == "staff":
                         staff_group = Group.objects.get(name="Staff")
@@ -103,7 +106,8 @@ class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, View):
                             new_staff_profile = StaffProfile(staff=new_user, staff_classroom=staff_class)
                             new_staff_profile.save()
                             if new_staff_profile.pk:
-                                msg = "\n".join([msg, f"{request.POST.get('first_name')} {request.POST.get('last_name')} has been assigned the class {staff_class.class_name}"])
+                                msg = f"New User {request.POST.get('first_name')} {request.POST.get('last_name')} created successfully!\n{request.POST.get('first_name')} {request.POST.get('last_name')} has been assigned the class {staff_class.class_name}"
+                                messages.success(request, msg)
                         redirect_page = "staff-view-all"
 
 

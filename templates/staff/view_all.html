@@ -69,8 +69,10 @@
 </body>
 </html>
 
-{% if msg %}
-    <script>
-        alert("{{msg|escapejs}}");
-    </script>
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            alert("{{ message|escapejs }}");
+        </script>
+    {% endfor %}
 {% endif %}
