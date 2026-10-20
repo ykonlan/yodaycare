@@ -25,6 +25,18 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"    
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user_phone_1"],
+                name="unique_phone_1"
+            ),
+            models.UniqueConstraint(
+                fields=["user_phone_2"],
+                name="unique_phone_2"
+            )
+        ]
+
 
 class StaffProfile(models.Model):
     staff = models.ForeignKey(

@@ -14,7 +14,7 @@ from django.shortcuts import redirect
 class AllParentsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = User
     template_name = "parents/view_all.html"
-    context_object_name = "parents"
+    context_object_name = "list"
 
     def test_func(self):
         user = self.request.user
@@ -34,7 +34,7 @@ class AllParentsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 class AllStaffView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = User
     template_name = "staff/view_all.html"
-    context_object_name = "staff"
+    context_object_name = "list"
     def get_queryset(self):
         staff_group = Group.objects.get(name="Staff")
         return User.objects.filter(groups=staff_group)
@@ -73,6 +73,7 @@ class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, View):
         return user.groups.filter(name="Administrators").exists()
 
     def post(self, request, *args, **kwargs):
+        redirect_page = "dashboard"
         user_type = self.kwargs["user_type"]
         msg = None
         user_form = AddUserForm(request.POST)
@@ -94,20 +95,23 @@ class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, View):
                         msg = f"New User {request.POST.get('first_name')} {request.POST.get('last_name')} created successfully!"
 
                     if user_type == "staff":
-                        staff_group = Group.objects.get(name="staff")
+                        staff_group = Group.objects.get(name="Staff")
                         new_user.groups.add(staff_group)
                         staff_profile_form = StaffProfileForm(request.POST)
                         if staff_profile_form.is_valid():
                             staff_class = staff_profile_form.cleaned_data["staff_classroom"]
-                            new_staff_profile = StaffProfile(user=new_user, staff_classroom=staff_class)
+                            new_staff_profile = StaffProfile(staff=new_user, staff_classroom=staff_class)
                             new_staff_profile.save()
                             if new_staff_profile.pk:
                                 msg = "\n".join([msg, f"{request.POST.get('first_name')} {request.POST.get('last_name')} has been assigned the class {staff_class.class_name}"])
+                        redirect_page = "staff-view-all"
+
 
                     elif user_type == "parent":
-                        parent_group = Group.objects.get(name="parents")
+                        parent_group = Group.objects.get(name="Parents")
                         new_user.groups.add(parent_group)
-            return render(request, "admin/create-new-user.html", {"user_form": user_form, "user_profile_form": user_profile_form, "msg":msg})
+                        redirect_page = "parents-view-all"
+            return redirect(redirect_page)
         else:
             return redirect("dashboard")
 

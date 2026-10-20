@@ -9,9 +9,21 @@ class AddUserForm(forms.ModelForm):
         fields = [
             "username",
             "email",
+            "password",
             "first_name",
             "last_name"
         ]
+        widgets = {
+            "password" : forms.PasswordInput(
+                attrs={
+                    "placeholder": "Enter Password Here"
+                }
+            )
+        }
+
+        help_texts = {
+            "username" : ""
+        }
 
 class AddUserProfileForm(forms.ModelForm):
     class Meta:

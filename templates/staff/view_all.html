@@ -21,7 +21,7 @@
             <th>Phone #2</th>
         </tr>
 
-        {% for staf in staff %}
+        {% for staf in list %}
             <tr>
                 <th>{{staf.id}}</th>
                 <th>{{staf.first_name}}</th>
@@ -40,8 +40,20 @@
                 <button id="close-modal">&times;</button>
             </div>
 
-            <form action="{% url 'create-new-user' user_type=staff %}" method="POST">
+            <form action="{% url 'create-new-user' user_type='staff' %}" method="POST">
                 {% csrf_token %}
+
+                {% if new_user_form.non_field_errors %}
+                    {{new_user_form.non_field_errors.0}}
+                {% endif %}
+
+                {% if new_user_profile_form.non_field_errors %}
+                    {{new_user_profile_form.non_field_errors.0}}
+                {% endif %}
+
+                {% if new_staff_form.non_field_errors %}
+                    {{new_staff_form.non_field_errors.0}}
+                {% endif %}
 
                 {{new_user_form.as_p}}
 
@@ -51,7 +63,14 @@
 
                 <button type="submit">Add Staff</button>
             </form>
+
         </div>
     </div>
 </body>
 </html>
+
+{% if msg %}
+    <script>
+        alert("{{msg|escapejs}}");
+    </script>
+{% endif %}
