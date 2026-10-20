@@ -1,11 +1,16 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View All Wards</title>
+    <link rel="stylesheet" href="{% static 'wards/css/view-all-wards.css' %}">
+    <script src="{% static 'wards/js/view-all-wards.js' %}" defer></script>
 </head>
 <body>
+    <button id="add-ward">Add Ward</button>
     <table>
         <tr>
             <th>ID</th>
@@ -23,5 +28,33 @@
             </tr>
         {% endfor %}
     </table>
+
+    <div id="modal">
+        <div id="modal-content">
+            <div class="modal-header">
+                Add Ward
+                <button id="close-modal">&times;</button>
+            </div>
+
+            <form action="{% url 'create-new-ward' %}" method="POST">
+                {% csrf_token %}
+
+                {% if new_ward_form.non_field_errors %}
+                    {{new_ward_form.non_field_errors.0}}
+                {% endif %}
+
+                {% if ward_allergy_form.non_field_errors %}
+                    {{ward_allergy_form.non_field_errors.0}}
+                {% endif %}
+
+                {{new_ward_form.as_p}}
+
+                {{ward_allergy_form.as_p}}
+
+                <button type="submit">Add Ward</button>
+            </form>
+
+        </div>
+    </div>
 </body>
 </html>

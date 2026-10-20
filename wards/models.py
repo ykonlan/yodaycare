@@ -45,6 +45,11 @@ class Ward(models.Model):
         on_delete=models.SET_NULL
     )
 
+    ward_dob = models.DateField(
+        verbose_name="Date of birth",
+        null=True
+    )
+
     def __str__(self):
         return self.ward_name
 
