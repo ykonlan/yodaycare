@@ -26,7 +26,7 @@
         {% for parent in list %}
             <tr>
                 <td>{{parent.id}}</td>
-                <td>{{parent.first_name}}</td>
+                <td><a href="{% url 'update-parent' pk=parent.id %}">{{parent.first_name}}</a></td>
                 <td>{{parent.last_name}}</td>
                 <td>{{parent.email}}</td>
                 <td>{{parent.profile.user_phone_1}}</td>

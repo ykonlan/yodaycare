@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
@@ -10,6 +10,9 @@ from users.models import UserProfile, StaffProfile
 from django.db import transaction
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.template.response import TemplateResponse
+from django.http import HttpResponseRedirect
+from django.contrib.auth.forms import SetPasswordForm
 
 # Create your views here.
 class AllParentsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -119,14 +122,47 @@ class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, View):
         else:
             return redirect("dashboard")
 
-                    
 
 
+class UpdateParentView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = User
+    fields = ["username", "first_name", "last_name", "email"]
+    template_name = "parents/view_by_id.html"
+    context_object_name = "parent"
 
+    def test_func(self):
+        return self.request.user.groups.filter(name="Administrators").exists()
 
-            
+    def get_success_url(self):
+        messages.success(self.request, f"Parent {self.object.first_name} {self.object.last_name} updated successfully!")
+        return reverse_lazy("update-parent", kwargs={"pk":self.object.id})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["parent_form"] = AddUserForm(instance=self.object, editing=True)
+        user_profile = self.object.profile
+        context["parent_profile_form"] = AddUserProfileForm(instance=user_profile)
+        context["password_form"] = SetPasswordForm(self.object)
+        return context
 
+    def form_valid(self, form):
+            user_profile_form = AddUserProfileForm(self.request.POST, instance=self.object.profile)
+            if not user_profile_form.is_valid():
+                context = self.get_context_data(form=form)
+                context["user_profile_form"] = user_profile_form
+                return TemplateResponse(
+                    self.request,
+                    self.template_name,
+                    context
+                )
+            with transaction.atomic():
+                self.object.save()
+                user_profile_form.instance = self.object
+                user_profile_form.save()
+    
+            return HttpResponseRedirect(self.get_success_url())
 
+    
 
-
+    
+    

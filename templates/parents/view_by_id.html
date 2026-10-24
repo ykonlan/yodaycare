@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Parent</title>
+</head>
+<body>
+    <form action="{% url 'update-parent' pk=parent.id %}">
+        {% csrf_token %}
+
+        {{parent_form.as_p}}
+
+        {{parent_profile_form.as_p}}
+
+        {{password_form.as_p}}
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

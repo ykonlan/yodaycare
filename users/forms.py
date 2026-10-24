@@ -25,6 +25,12 @@ class AddUserForm(forms.ModelForm):
             "username" : ""
         }
 
+    def __init__(self, *args, **kwargs):
+        editing = kwargs.pop("editing", False)
+        super().__init__(*args, **kwargs)
+        if editing:
+            self.fields.pop("password")
+
 class AddUserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
