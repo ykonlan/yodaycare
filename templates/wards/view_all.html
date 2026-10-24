@@ -21,10 +21,10 @@
 
         {% for ward in wards %}
             <tr>
-                <th>{{ward.id}}</th>
-                <th>{{ward.ward_name}}</th>
-                <th>{{ward.ward_class}}</th>
-                <th>{{ward.ward_parent}}</th>
+                <td>{{ward.id}}</td>
+                <td><a href="{% url 'update-ward' pk=ward.id %}">{{ward.ward_name}}</a></td>
+                <td>{{ward.ward_class}}</td>
+                <td>{{ward.ward_parent}}</td>
             </tr>
         {% endfor %}
     </table>

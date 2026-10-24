@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Ward Details</title>
+    <script src="{% static 'wards/js/view-by-id.js' %}" defer></script>
+</head>
+<body>
+    <form action="{% url 'update-ward' pk=ward.id %}" method="post">
+        {% csrf_token %}
+        {{ward_form.as_p}}
+
+        <button type="button" id="add-allergy">Add Allergy</button>
+
+        <div id="allergy-formset">
+            {{allergies.as_p}}
+        </div>
+
+        <button type="submit">Submit</button>
+
+    </form>
+
+    <template id="empty-form-template">
+        <div id="empty-allergy-form">
+            {{allergies.empty_form.as_p}}
+        </div>
+    </template>
+</body>
+</html>
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            alert("{{ message|escapejs }}");
+        </script>
+    {% endfor %}
+{% endif %}

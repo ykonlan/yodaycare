@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from wards.validators import validator_for_name
 from datetime import date
+from django.urls import reverse_lazy
+from django.shortcuts import redirect
 
 # Create your models here.
 class Classroom(models.Model):
@@ -55,6 +57,7 @@ class Ward(models.Model):
     def __str__(self):
         return self.ward_name
 
+    
 class Allergy(models.Model):
     allergy_substance = models.CharField(
         verbose_name="Allergy Substance",

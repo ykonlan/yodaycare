@@ -28,4 +28,5 @@ AllergyFormSet = forms.inlineformset_factory(
     form=AddWardAllergy,
     fk_name="allergy_ward",
     extra=0,
+    can_delete=True
 )
