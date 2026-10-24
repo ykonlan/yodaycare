@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from wards.validators import validator_for_name
+from datetime import date
 
 # Create your models here.
 class Classroom(models.Model):
@@ -28,7 +29,8 @@ class Ward(models.Model):
     )
 
     ward_date_added = models.DateField(
-        verbose_name="Date Added"
+        verbose_name="Date Added",
+        default=date.today
     )
 
     ward_parent = models.ForeignKey(
@@ -56,12 +58,12 @@ class Ward(models.Model):
 class Allergy(models.Model):
     allergy_substance = models.CharField(
         verbose_name="Allergy Substance",
-        max_length=500
+        max_length=500,
     )
 
     allergy_reaction = models.CharField(
         verbose_name="Expected Allergic Reaction",
-        max_length=500
+        max_length=500,
     )
 
     allergy_severity_choices = (

@@ -3,7 +3,11 @@ from django.views.generic import ListView
 from wards.models import Ward
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from wards.forms import AddWardForm, AddWardAllergy
+from wards.forms import AddWardForm, AllergyFormSet
+from django.db import transaction
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 
 # Create your views here.
 class AllWardsView(ListView):
@@ -14,7 +18,7 @@ class AllWardsView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["new_ward_form"] = AddWardForm()
-        context["ward_allergy_form"] = AddWardAllergy()
+        context["ward_allergy_formset"] = AllergyFormSet()
         return context
 
     def get_queryset(self):
@@ -38,7 +42,18 @@ class CreateNewWard(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.groups.filter(name="Administrators").exists()
 
     def post(self, request, *args, **kwargs):
-        new_ward_form = AddWardForm()
+        new_ward_form = AddWardForm(request.POST)
+        allergy_formset = AllergyFormSet(request.POST)
+        if new_ward_form.is_valid() and allergy_formset.is_valid():
+            with transaction.atomic():
+                new_ward = new_ward_form.save()
+                allergy_formset.instance = new_ward
+                allergy_formset.save()
+        if new_ward.pk:
+            messages.success(request, f"New ward {new_ward.ward_name} created successfully")
+        return redirect(reverse_lazy("wards-view-all"))
+
+            
 
 
 

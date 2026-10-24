@@ -1,6 +1,6 @@
 from django import forms
 from wards.models import Ward, Allergy
-from users.models import User
+from users.models import UserProfile
 
 class AddWardForm(forms.ModelForm):
     class Meta:
@@ -13,7 +13,7 @@ class AddWardForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields["ward_parent"].queryset = User.objects.filter(groups__name="Parents")
+        self.fields["ward_parent"].queryset = UserProfile.objects.filter(user__groups__name="Parents")
 
 
 class AddWardAllergy(forms.ModelForm):
@@ -22,4 +22,10 @@ class AddWardAllergy(forms.ModelForm):
         fields = ["allergy_substance", "allergy_reaction", "allergy_severity", "allergy_immediate_treatment"]
 
 
-        
+AllergyFormSet = forms.inlineformset_factory(
+    Ward,
+    Allergy,
+    form=AddWardAllergy,
+    fk_name="allergy_ward",
+    extra=0,
+)
