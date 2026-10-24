@@ -12,7 +12,6 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
-from django.contrib.auth.forms import SetPasswordForm
 
 # Create your views here.
 class AllParentsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -142,7 +141,6 @@ class UpdateParentView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         context["parent_form"] = AddUserForm(instance=self.object, editing=True)
         user_profile = self.object.profile
         context["parent_profile_form"] = AddUserProfileForm(instance=user_profile)
-        context["password_form"] = SetPasswordForm(self.object)
         return context
 
     def form_valid(self, form):
@@ -157,7 +155,6 @@ class UpdateParentView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
                 )
             with transaction.atomic():
                 self.object.save()
-                user_profile_form.instance = self.object
                 user_profile_form.save()
     
             return HttpResponseRedirect(self.get_success_url())

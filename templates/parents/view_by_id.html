@@ -6,14 +6,12 @@
     <title>Edit Parent</title>
 </head>
 <body>
-    <form action="{% url 'update-parent' pk=parent.id %}">
+    <form action="{% url 'update-parent' pk=parent.id %}" method="post">
         {% csrf_token %}
 
         {{parent_form.as_p}}
 
         {{parent_profile_form.as_p}}
-
-        {{password_form.as_p}}
 
         <button type="submit">Submit</button>
     </form>
