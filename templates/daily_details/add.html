@@ -1,28 +1,64 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Report</title>
+    <script src="{% static 'daily_details/js/add.js' %}" defer></script>
 </head>
 <body>
     <h1>Daily Report for {{ward.ward_name}} on {% now "Y-m-d" %}</h1>
-    <div id="main-report">    
-        {{daily_deet_form.as_p}}
-    </div>
+    <form action="{% url 'add-daily-report' ward_id=ward.id %}" method="post">
+        {% csrf_token %}
+        <div id="main-report">    
+            {{daily_deet_form.as_p}}
+        </div>
 
-    <div id="med-form">
-        {{med_form.as_p}}
-    </div>
+        <div id="med-form">
+            <button id="add-med">Add Med</button>
+            {{med_form.as_p}}
+        </div>
 
-    <div id="meal-form">    
-        {{meal_form.as_p}}
-    </div>
+        <div id="meal-form">   
+            <button id="add-meal">Add Meal</button> 
+            {{meal_form.as_p}}
+        </div>
 
-    <div id="nap-form">    
-        {{nap_form.as_p}}
-    </div>
+        <div id="nap-form">  
+            <button id="add-nap">Add Nap</button>  
+            {{nap_form.as_p}}
+        </div>
 
-    <button type="submit">Submit</button>
+        <button type="submit">Submit</button>
+    </form>
+
+    <template id="empty-med-template">
+        <div id="empty-med-form">
+            {{med_form.empty_form.as_p}}
+        </div>
+    </template>
+
+    <template id="empty-meal-template">
+        <div id="empty-meal-form">
+            {{meal_form.empty_form.as_p}}
+        </div>
+    </template>
+
+    <template id="empty-nap-template">
+        <div id="empty-nap-form">
+            {{nap_form.empty_form.as_p}}
+        </div>
+    </template>
 </body>
 </html>
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            alert("{{ message|escapejs }}");
+        </script>
+    {% endfor %}
+{% endif %}
+
