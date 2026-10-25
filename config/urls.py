@@ -24,4 +24,5 @@ urlpatterns = [
     path("", CustomLoginView.as_view(template_name="pages/index.html"), name="login"),
     path("users/", include("users.urls")),
     path("wards/", include("wards.urls")),
+    path("daily-details/", include("daily_details.urls")),
 ]

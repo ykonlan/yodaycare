@@ -65,6 +65,11 @@ class Nap(models.Model):
 
 
 class Meal(models.Model):
+    meal_date = models.DateField(
+        default=timezone.localdate,
+        verbose_name="Date"
+    )
+
     meal_name = models.TextField(
         verbose_name="Food"
     )
@@ -106,4 +111,9 @@ class Med(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Ward",
         related_name="meds"
+    )
+
+    med_date = models.DateField(
+        default=timezone.localdate,
+        verbose_name="Date"
     )

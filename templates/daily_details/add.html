@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Report</title>
+</head>
+<body>
+    <h1>Daily Report for {{ward.ward_name}} on {% now "Y-m-d" %}</h1>
+    <div id="main-report">    
+        {{daily_deet_form.as_p}}
+    </div>
+
+    <div id="med-form">
+        {{med_form.as_p}}
+    </div>
+
+    <div id="meal-form">    
+        {{meal_form.as_p}}
+    </div>
+
+    <div id="nap-form">    
+        {{nap_form.as_p}}
+    </div>
+
+    <button type="submit">Submit</button>
+</body>
+</html>
