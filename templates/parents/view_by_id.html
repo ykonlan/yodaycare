@@ -17,3 +17,11 @@
     </form>
 </body>
 </html>
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            alert("{{ message|escapejs }}");
+        </script>
+    {% endfor %}
+{% endif %}

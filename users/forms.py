@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from users.models import UserProfile
+from users.models import UserProfile, StaffProfile
 from wards.models import Classroom
 
 class AddUserForm(forms.ModelForm):
@@ -43,3 +43,8 @@ class StaffProfileForm(forms.Form):
     staff_classroom = forms.ModelChoiceField(
         queryset=Classroom.objects.all()
     )
+
+class EditStaffProfileForm(forms.ModelForm):
+    class Meta:
+        model = StaffProfile
+        fields = ["staff_classroom"]

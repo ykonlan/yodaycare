@@ -23,12 +23,12 @@
 
         {% for staf in list %}
             <tr>
-                <th>{{staf.id}}</th>
-                <th>{{staf.first_name}}</th>
-                <th>{{staf.last_name}}</th>
-                <th>{{staf.email}}</th>
-                <th>{{staf.profile.user_phone_1}}</th>
-                <th>{{staf.profile.user_phone_2}}</th>
+                <td>{{staf.id}}</td>
+                <td><a href="{% url 'update-staff' pk=staf.id %}">{{staf.first_name}}</a></td>
+                <td>{{staf.last_name}}</td>
+                <td>{{staf.email}}</td>
+                <td>{{staf.profile.user_phone_1}}</td>
+                <td>{{staf.profile.user_phone_2}}</td>
             </tr>
         {% endfor %}
     </table>

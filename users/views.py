@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from django.views import View
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from users.forms import AddUserForm, AddUserProfileForm, StaffProfileForm
+from users.forms import AddUserForm, AddUserProfileForm, StaffProfileForm, EditStaffProfileForm
 from users.models import UserProfile, StaffProfile
 from django.db import transaction
 from django.shortcuts import redirect
@@ -156,6 +156,59 @@ class UpdateParentView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             with transaction.atomic():
                 self.object.save()
                 user_profile_form.save()
+    
+            return HttpResponseRedirect(self.get_success_url())
+
+
+class UpdateStaffView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = User
+    fields = ["username", "first_name", "last_name", "email"]
+    template_name = "staff/view_by_id.html"
+    context_object_name = "staff"
+
+    def test_func(self):
+        return self.request.user.groups.filter(name="Administrators").exists()
+
+    def get_success_url(self):
+        messages.success(self.request, f"Staff {self.object.first_name} {self.object.last_name} updated successfully!")
+        return reverse_lazy("update-staff", kwargs={"pk":self.object.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["staff_form"] = AddUserForm(instance=self.object, editing=True)
+        user_profile = self.object.profile
+        staff_profile = self.object.staff_profile.first()
+        context["user_profile_form"] = AddUserProfileForm(instance=user_profile)
+        context["staff_profile_form"] = EditStaffProfileForm(instance=staff_profile)
+        return context
+
+    def form_valid(self, form):
+            user_profile_form = AddUserProfileForm(self.request.POST, instance=self.object.profile)
+            staff_profile_form = EditStaffProfileForm(self.request.POST, instance=self.object.staff_profile.first())
+            if not user_profile_form.is_valid():
+                context = self.get_context_data(form=form)
+                context["user_profile_form"] = user_profile_form
+                return TemplateResponse(
+                    self.request,
+                    self.template_name,
+                    context
+                )
+
+            if not staff_profile_form.is_valid():
+                context = self.get_context_data(form=form)
+                context["user_profile_form"] = user_profile_form
+                context["staff_profile_form"] =  staff_profile_form
+                return TemplateResponse(
+                    self.request,
+                    self.template_name,
+                    context
+                )
+
+            
+            with transaction.atomic():
+                self.object.save()
+                user_profile_form.save()
+                staff_profile_form.save()
     
             return HttpResponseRedirect(self.get_success_url())
 

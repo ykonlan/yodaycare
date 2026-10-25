@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Staff</title>
+</head>
+<body>
+    <form action="{% url 'update-staff' pk=staff.id %}" method="post">
+        {% csrf_token %}
+
+        {{staff_form.as_p}}
+
+        {{user_profile_form.as_p}}
+
+        {{staff_profile_form.as_p}}
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
