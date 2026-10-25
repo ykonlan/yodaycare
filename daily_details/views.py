@@ -51,10 +51,11 @@ class AddDailyReportView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         ward_id = kwargs["ward_id"]
         ward = Ward.objects.get(id=ward_id)
+        daily_deet = DailyDetails.objects.filter(daily_details_ward=ward, daily_details_date=timezone.localdate()).first()
         nap_form = NapFormset(request.POST, instance=ward)
         meal_form = MealFormset(request.POST, instance=ward)
         med_form = MedFormset(request.POST, instance=ward)
-        daily_deets_form = DailyDetailsForm(request.POST)
+        daily_deets_form = DailyDetailsForm(request.POST, instance=daily_deet)
         if nap_form.is_valid() and meal_form.is_valid() and med_form.is_valid() and daily_deets_form.is_valid():
             try:
                 with transaction.atomic():
