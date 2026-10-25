@@ -39,7 +39,7 @@ class UserProfile(models.Model):
 
 
 class StaffProfile(models.Model):
-    staff = models.ForeignKey(
+    staff = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         verbose_name="Staff",

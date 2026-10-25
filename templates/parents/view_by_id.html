@@ -15,6 +15,21 @@
 
         <button type="submit">Submit</button>
     </form>
+
+    {% if parent_wards %}
+        <table>
+            <tr>
+                <th>Ward Name</th>
+                <th>Ward Class</th>
+            </tr>
+            {% for ward in parent_wards %}
+                <tr>
+                    <td><a href="{% url 'update-ward' pk=ward.id %}">{{ward.ward_name}}</a></td>
+                    <td>{{ward.ward_class}}</td>
+                </tr>
+            {% endfor %}
+    {% endif %}
+        </table>
 </body>
 </html>
 

@@ -16,6 +16,7 @@
             <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Classroom</th>
             <th>Email</th>
             <th>Phone #1</th>
             <th>Phone #2</th>
@@ -26,6 +27,7 @@
                 <td>{{staf.id}}</td>
                 <td><a href="{% url 'update-staff' pk=staf.id %}">{{staf.first_name}}</a></td>
                 <td>{{staf.last_name}}</td>
+                <td>{{staf.staff_profile.staff_classroom}}</td>
                 <td>{{staf.email}}</td>
                 <td>{{staf.profile.user_phone_1}}</td>
                 <td>{{staf.profile.user_phone_2}}</td>

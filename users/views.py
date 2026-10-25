@@ -141,6 +141,7 @@ class UpdateParentView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         context["parent_form"] = AddUserForm(instance=self.object, editing=True)
         user_profile = self.object.profile
         context["parent_profile_form"] = AddUserProfileForm(instance=user_profile)
+        context["parent_wards"] = user_profile.wards.all()
         return context
 
     def form_valid(self, form):
@@ -148,6 +149,7 @@ class UpdateParentView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             if not user_profile_form.is_valid():
                 context = self.get_context_data(form=form)
                 context["user_profile_form"] = user_profile_form
+                context["parent_wards"] = self.object.wards.all()
                 return TemplateResponse(
                     self.request,
                     self.template_name,
