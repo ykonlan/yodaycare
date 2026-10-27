@@ -12,7 +12,7 @@ from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 
 # Create your views here.
-class AllWardsView(ListView):
+class AllWardsView(LoginRequiredMixin, ListView):
     model = Ward
     template_name = "wards/view_all.html"
     context_object_name = "wards"
@@ -29,7 +29,7 @@ class AllWardsView(ListView):
         wards = None
         p_wards = None
         if self.request.user.groups.filter(name="Staff").exists():
-            wards = Ward.objects.filter(ward_class=self.request.user.staff_profile.first().staff_classroom)
+            wards = Ward.objects.filter(ward_class=self.request.user.staff_profile.staff_classroom)
         if self.request.user.groups.filter(name="Parents").exists():
             p_wards = Ward.objects.filter(ward_parent__user=self.request.user)
         if (wards is not None) and (p_wards is not None):

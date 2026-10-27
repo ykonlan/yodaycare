@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See Daily Report</title>
+</head>
+<body>
+    <form action="{% url 'view-daily-report' pk=ward.id %}" method="get">
+        {% csrf_token %}
+
+        <input type="date" name="date">
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <h1>Daily Report for {{daily_report.daily_details_ward.ward_name}} on {{daily_report.daily_details_date}}</h1>
+    <p>
+        Date : {{daily_report.daily_details_date}}
+    </p>
+
+    <p>
+        Ward name : {{daily_report.daily_details_ward.ward_name}}
+    </p>
+
+    <p>
+        <h2>Meds</h2>
+        {% for med in meds %}
+            <p>
+                Medication : {{med.med_name}}<br>
+                Medication Time : {{med.med_time}}
+            </p>
+        {% endfor %}
+    </p>
+
+    <p>
+        <h2>Meals</h2>
+        {% for meal in meals %}
+            <p>
+                Meal : {{meal.meal_name}}<br>
+                Meal Time : {{meal.meal_time}}
+            </p>
+        {% endfor %}
+    </p>
+
+    <p>
+        <h2>Naps</h2>
+        {% for nap in naps %}
+            <p>
+                Nap Start Time : {{nap.nap_start_time}}<br>
+                Nap End Time : {{nap.nap_end_time}}
+            </p>
+        {% endfor %}
+    </p>
+
+    <p>
+        <h2>Extra Needs</h2>
+        <p>
+            {{daily_report.daily_details_extra_needs}}
+        </p>
+    </p>
+
+    <p>
+        <h2>Ward's General Mood</h2>
+        <p>
+            {{daily_report.daily_details_general_mood}}
+        </p>
+    </p>
+
+    <p>
+        <h2>Special Behaavior</h2>
+        <p>
+            {{daily_report.daily_details_special_behavior}}
+        </p>
+    </p>
+</body>
+</html>

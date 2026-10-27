@@ -26,6 +26,7 @@
                 <td>{{ward.ward_class}}</td>
                 <td><a href="{% url 'update-parent' pk=ward.ward_parent.id %}">{{ward.ward_parent}}</a></td>
                 <td><a href="{% url 'add-daily-report' ward_id=ward.id %}"><button>Fill Daily Deets</button></a></td>
+                <td><a href="{% url 'view-daily-report' pk=ward.id %}"><button>View Daily Deets</button></a></td>
             </tr>
         {% endfor %}
     </table>

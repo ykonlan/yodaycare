@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views import View
+from django.views import View, generic
 from daily_details.forms import MealFormset, MedFormset, NapFormset, DailyDetailsForm
 from wards.models import Ward
 from daily_details.models import DailyDetails, Nap, Meal, Med
@@ -105,6 +105,44 @@ class AddDailyReportView(LoginRequiredMixin, UserPassesTestMixin, View):
                 "daily_deet_form" : daily_deets_form
             }
             return render(request, "daily_details/add.html", context)
+
+class SeeDailyReportView(LoginRequiredMixin, UserPassesTestMixin, generic.DetailView):
+    template_name = "daily_details/view.html"
+    context_object_name = "daily_report"
+
+    def test_func(self):
+        user = self.request.user
+        is_admin = user.groups.filter(name="Administrators").exists()
+        if is_admin:
+            return True
+        ward_id = self.kwargs["pk"]
+        ward = Ward.objects.get(id=int(ward_id))
+        if user.groups.filter(name="Staff").exists():
+            return ward.ward_class == user.staff_profile.staff_classroom
+        if user.groups.filter(name="Parents").exists():
+            return ward.ward_parent == user
+        return False
+
+    def get_object(self, queryset = None):
+        today = timezone.localdate()
+        ward_id = self.kwargs["pk"]
+        dd_date = self.request.GET.get("date", today)
+        return DailyDetails.objects.filter(daily_details_ward=ward_id, daily_details_date=dd_date).first()
+
+    def get_context_data(self, **kwargs):
+        today = timezone.localdate()
+        ward_id = self.kwargs["pk"]
+        ward = Ward.objects.get(id=ward_id)
+        dd_date = self.request.GET.get("date", today)
+        context = super().get_context_data(**kwargs)
+        context["naps"] = Nap.objects.filter(nap_ward=ward_id, nap_date=dd_date)
+        context["meals"] = Meal.objects.filter(meal_ward=ward_id, meal_date=dd_date)
+        context["meds"] = Med.objects.filter(med_ward=ward_id, med_date=dd_date)
+        context["ward"] = ward
+        return context
+
+
+    
 
 
 
