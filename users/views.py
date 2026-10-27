@@ -60,7 +60,7 @@ class CustomLoginView(auth_views.LoginView):
     def get_success_url(self):
         return reverse_lazy("dashboard")
 
-class ProfileDashboard(View):
+class ProfileDashboard(LoginRequiredMixin, View):
     def get(self, request):
         user = self.request.user
         if user.groups.filter(name="Administrators").exists():
