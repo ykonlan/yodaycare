@@ -120,7 +120,7 @@ class SeeDailyReportView(LoginRequiredMixin, UserPassesTestMixin, generic.Detail
         if user.groups.filter(name="Staff").exists():
             return ward.ward_class == user.staff_profile.staff_classroom
         if user.groups.filter(name="Parents").exists():
-            return ward.ward_parent == user
+            return ward.ward_parent.user == user
         return False
 
     def get_object(self, queryset = None):
