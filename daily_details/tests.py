@@ -160,10 +160,12 @@ class DailyDetailsTests(TestCase):
                 daily_details_ward = self.ward1
             )
 
-    def admin_can_view_any_ward(self):
-        self.client.login(
-            username = "ykonlanadmin",
-            password = "yyyisgood"
+    def test_admin_can_view_any_ward(self):
+        self.assertTrue(
+            self.client.login(
+                username = "ykonlanadmin",
+                password = "yyyisgood"
+            )
         )
 
         response = self.client.get(reverse("view-daily-report", kwargs={"pk": self.ward1.id}))
@@ -172,7 +174,28 @@ class DailyDetailsTests(TestCase):
         response = self.client.get(reverse("view-daily-report", kwargs={"pk": self.ward2.id}))
         self.assertEqual(response.status_code, 200)
 
+    def test_admin_can_update_staff(self):
+        self.assertTrue(
+            self.client.login(
+                username = "ykonlanadmin",
+                password = "yyyisgood"
+            )
+        )
 
+        response = self.client.get(reverse("update-staff", kwargs={"pk": self.s1.id}))
 
+        self.assertEqual(response.status_code, 200)
+
+    def test_nonadmin_cannot_update_staff(self):
+        self.assertTrue(
+            self.client.login(
+                username = "yoeman",
+                password = "yyyisgood"
+            )
+        )
+
+        response = self.client.get(reverse("update-staff", kwargs={"pk": self.s1.id}))
+
+        self.assertEqual(response.status_code, 403)
 
 

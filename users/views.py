@@ -179,7 +179,7 @@ class UpdateStaffView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context["staff_form"] = AddUserForm(instance=self.object, editing=True)
         user_profile = self.object.profile
-        staff_profile = self.object.staff_profile.first()
+        staff_profile = self.object.staff_profile
         context["user_profile_form"] = AddUserProfileForm(instance=user_profile)
         context["staff_profile_form"] = EditStaffProfileForm(instance=staff_profile)
         return context
