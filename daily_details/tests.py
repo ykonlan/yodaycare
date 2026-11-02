@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.contrib.auth.models import Group, User
 from users.models import UserProfile, StaffProfile
 from wards.models import Classroom, Ward
+from daily_details.models import DailyDetails
+from django.db import IntegrityError
 
 # Create your tests here.
 class DailyDetailsTests(TestCase):
@@ -86,6 +88,18 @@ class DailyDetailsTests(TestCase):
             staff = cls.s1,
             staff_classroom = cls.classroom1
         )
+
+        cls.admin_group = Group.objects.get(name="Administrators")
+        cls.admin = User.objects.create_user(
+            username = "ykonlanadmin",
+            password = "yyyisgood"
+        )
+        cls.user_profile = UserProfile.objects.create(
+            user_phone_1 = "0591120815",
+            user_phone_2 = "0244681441",
+            user = cls.admin
+        )
+        cls.admin.groups.add(cls.admin_group)
     
     def test_parent_cannot_view_another_parents_ward(self):
         # Login as Parent 2, Evame
@@ -124,16 +138,39 @@ class DailyDetailsTests(TestCase):
 
 
     def test_staff_can_view_ward_from_their_class(self):
-            self.assertTrue(
-                self.client.login(
-                    username = "ibino",
-                    password = "yyyisgood"
-                )
+        self.assertTrue(
+            self.client.login(
+                username = "ibino",
+                password = "yyyisgood"
             )
-    
-            response = self.client.get(reverse("view-daily-report", kwargs={"pk": self.ward1.id}))
-            self.assertEqual(response.status_code, 200)
+        )
 
+        response = self.client.get(reverse("view-daily-report", kwargs={"pk": self.ward1.id}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_cannot_add_multiple_report_for_ward_on_same_day(self):
+        DailyDetails.objects.create(
+            daily_details_general_mood = "happy",
+            daily_details_ward = self.ward1
+        )
+
+        with self.assertRaises(IntegrityError):
+            DailyDetails.objects.create(
+                daily_details_general_mood = "joyous",
+                daily_details_ward = self.ward1
+            )
+
+    def admin_can_view_any_ward(self):
+        self.client.login(
+            username = "ykonlanadmin",
+            password = "yyyisgood"
+        )
+
+        response = self.client.get(reverse("view-daily-report", kwargs={"pk": self.ward1.id}))
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(reverse("view-daily-report", kwargs={"pk": self.ward2.id}))
+        self.assertEqual(response.status_code, 200)
 
 
 
