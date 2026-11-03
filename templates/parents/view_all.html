@@ -58,34 +58,58 @@
     </div>
 
     <!-- Add Parent Modal -->
-    <div id="modal">
-        <div id="modal-content">
+<div id="modal" class="custom-modal">
+    <div id="modal-content" class="custom-modal-content">
 
-            <div class="modal-header">
-                Add Parent
-                <button id="close-modal" type="button">&times;</button>
+        <div class="custom-modal-header">
+            <div>
+                <h2>Add Parent</h2>
+                <p>Enter the parent's account and contact information.</p>
             </div>
 
-            <form action="{% url 'create-new-user' user_type='parent' %}" method="POST">
-                {% csrf_token %}
+            <button id="close-modal" type="button" class="modal-close">
+                &times;
+            </button>
+        </div>
+
+        <form action="{% url 'create-new-user' user_type='parent' %}"
+              method="POST"
+              class="custom-modal-form">
+
+            {% csrf_token %}
+
+            <div class="custom-modal-body">
 
                 {% if new_user_form.non_field_errors %}
-                    {{ new_user_form.non_field_errors.0 }}
+                    {{ new_user_form.non_field_errors }}
                 {% endif %}
 
                 {% if new_user_profile_form.non_field_errors %}
-                    {{ new_user_profile_form.non_field_errors.0 }}
+                    {{ new_user_profile_form.non_field_errors }}
                 {% endif %}
 
-                {{ new_user_form.as_p }}
+                <section class="modal-form-section">
+                    <h3>Account Information</h3>
+                    {{ new_user_form.as_p }}
+                </section>
 
-                {{ new_user_profile_form.as_p }}
+                <section class="modal-form-section">
+                    <h3>Contact Information</h3>
+                    {{ new_user_profile_form.as_p }}
+                </section>
 
-                <button type="submit">Add Parent</button>
-            </form>
+            </div>
 
-        </div>
+            <div class="custom-modal-footer">
+                <button type="submit" class="primary-button">
+                    Add Parent
+                </button>
+            </div>
+
+        </form>
+
     </div>
+</div>
 
     {% if messages %}
         {% for message in messages %}
