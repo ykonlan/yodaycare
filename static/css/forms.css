@@ -1,0 +1,179 @@
+/* Form layout */
+form {
+    width: 100%;
+}
+
+form p {
+    margin-bottom: 20px;
+}
+
+/* Labels */
+form label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+}
+
+/* Text inputs, selects and textareas */
+form input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+form select,
+form textarea {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #DDE1DC;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Input heights */
+form input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+form select {
+    min-height: 42px;
+}
+
+form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Placeholder */
+form input::placeholder,
+form textarea::placeholder {
+    color: #A0A79F;
+}
+
+/* Focus */
+form input:focus,
+form select:focus,
+form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(111, 146, 114, 0.15);
+}
+
+/* Checkboxes and radio buttons */
+form input[type="checkbox"],
+form input[type="radio"] {
+    accent-color: var(--color-primary);
+}
+
+/* Help text */
+form .helptext {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #7A827B;
+}
+
+/* Validation errors */
+form .errorlist {
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    color: #C04444;
+    font-size: 12px;
+}
+
+/* Disabled fields */
+form input:disabled,
+form select:disabled,
+form textarea:disabled {
+    background-color: #F0F1EE;
+    cursor: not-allowed;
+}
+
+/* Submit buttons */
+form button[type="submit"],
+form input[type="submit"] {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+form button[type="submit"]:hover,
+form input[type="submit"]:hover {
+    background-color: var(--color-primary-light);
+}
+
+/* Base button */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 9px 18px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
+}
+
+/* Primary button */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-light);
+    color: #FFFFFF;
+}
+
+/* Secondary button */
+.btn-secondary {
+    background-color: var(--color-highlight);
+    color: var(--color-text);
+}
+
+.btn-secondary:hover {
+    background-color: #C9DEC9;
+    color: var(--color-text);
+}
+
+/* Outline button */
+.btn-outline {
+    background-color: transparent;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-highlight);
+}
+
+/* Danger button */
+.btn-danger {
+    background-color: #C04444;
+    color: #FFFFFF;
+}
+
+.btn-danger:hover {
+    background-color: #A93636;
+    color: #FFFFFF;
+}
+
+/* Disabled button */
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}

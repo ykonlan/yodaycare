@@ -151,3 +151,218 @@
         padding: 18px;
     }
 }
+
+/* Page container */
+.staff-page {
+    width: 100%;
+}
+
+/* Page heading */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg);
+}
+
+.page-header h1 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    margin: 0;
+}
+
+/* Add Staff button */
+.page-header button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.page-header button:hover {
+    background-color: var(--color-primary-light);
+}
+
+/* Table container */
+.staff-page table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--color-surface);
+    border: 1px solid #E8EAE6;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+/* Table headings */
+.staff-page thead {
+    background-color: #F3F5F1;
+}
+
+.staff-page th {
+    padding: 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: var(--font-weight-semibold);
+    color: #737C73;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+/* Table cells */
+.staff-page td {
+    padding: 16px;
+    font-size: 14px;
+    border-top: 1px solid #E8EAE6;
+    color: var(--color-text);
+}
+
+/* Row hover */
+.staff-page tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.staff-page tbody tr:hover {
+    background-color: #F8FAF7;
+}
+
+/* Staff name links */
+.staff-page td a {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+}
+
+.staff-page td a:hover {
+    text-decoration: underline;
+}
+
+/* Empty table message */
+.staff-page td[colspan] {
+    text-align: center;
+    color: #7A827B;
+    padding: 32px;
+}
+
+/* Responsive table */
+@media (max-width: 900px) {
+    .staff-page {
+        overflow-x: auto;
+    }
+
+    .staff-page table {
+        min-width: 850px;
+    }
+}
+
+/* Page container */
+.parents-page {
+    width: 100%;
+}
+
+/* Page heading */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg);
+}
+
+.page-header h1 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    margin: 0;
+}
+
+/* Add Parent button */
+.page-header button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.page-header button:hover {
+    background-color: var(--color-primary-light);
+}
+
+/* Table */
+.parents-page table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--color-surface);
+    border: 1px solid #E8EAE6;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.parents-page thead {
+    background-color: #F3F5F1;
+}
+
+.parents-page th {
+    padding: 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: var(--font-weight-semibold);
+    color: #737C73;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.parents-page td {
+    padding: 16px;
+    font-size: 14px;
+    border-top: 1px solid #E8EAE6;
+    color: var(--color-text);
+}
+
+.parents-page tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.parents-page tbody tr:hover {
+    background-color: #F8FAF7;
+}
+
+/* Parent name links */
+.parents-page td a {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+}
+
+.parents-page td a:hover {
+    text-decoration: underline;
+}
+
+/* Empty table message */
+.parents-page td[colspan] {
+    text-align: center;
+    color: #7A827B;
+    padding: 32px;
+}
+
+/* Responsive table */
+@media (max-width: 900px) {
+    .parents-page {
+        overflow-x: auto;
+    }
+
+    .parents-page table {
+        min-width: 750px;
+    }
+}

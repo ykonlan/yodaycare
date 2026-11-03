@@ -7,6 +7,11 @@ class DailyDetailsForm(forms.ModelForm):
     class Meta:
         model = DailyDetails
         fields = ["daily_details_extra_needs", "daily_details_general_mood", "daily_details_special_behavior" ]
+        widgets = {
+            "daily_details_extra_needs" : forms.TextInput(attrs={"rows":4, "cols":7}),
+            "daily_details_general_mood" : forms.TextInput(attrs={"rows":4, "cols":7}),
+            "daily_details_special_behavior" : forms.TextInput(attrs={"rows":4, "cols":7})
+        }
 
 class NapForm(forms.ModelForm):
     class Meta:
@@ -23,6 +28,7 @@ class MealForm(forms.ModelForm):
         fields = ["meal_name", "meal_time", "meal_amount_consumed"]
         widgets = {
             "meal_time" : forms.TimeInput(attrs={"type":"time"}),
+            "meal_name" : forms.TextInput(attrs={"rows":4, "cols":7})
         }
 
 class MedForm(forms.ModelForm):
@@ -30,7 +36,8 @@ class MedForm(forms.ModelForm):
         model = Med
         fields = ["med_name", "med_time"]
         widgets = {
-            "med_time" : forms.TimeInput(attrs={"type":"time"})
+            "med_time" : forms.TimeInput(attrs={"type":"time"}),
+            "med_name" : forms.TextInput(attrs={"rows":4, "cols":7})
         }
 
 NapFormset = inlineformset_factory(
