@@ -1,0 +1,156 @@
+/* Sidebar container */
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+/* Brand */
+.sidebar-brand {
+    margin-bottom: 40px;
+}
+
+.sidebar-brand h4 {
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.sidebar-brand span {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* Navigation sections */
+.sidebar-section {
+    margin-bottom: 28px;
+}
+
+.sidebar-heading {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    opacity: 0.75;
+}
+
+/* Navigation links */
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    margin-bottom: 4px;
+    border-radius: var(--radius-sm);
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar-link:hover {
+    background-color: var(--color-primary-light);
+    color: #FFFFFF;
+}
+
+.sidebar-link.active {
+    background-color: var(--color-primary-light);
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+/* Sidebar icons */
+.sidebar-icon {
+    width: 20px;
+    text-align: center;
+    font-size: 17px;
+}
+
+
+/* Top navbar */
+.top-navbar {
+    height: 72px;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid #E8EAE6;
+    padding: 0 var(--spacing-xl);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Page title */
+.navbar-page-title h5 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+}
+
+/* Navbar actions */
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+/* Notification button */
+.notification-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+/* User menu */
+.user-menu-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: var(--font-weight-medium);
+}
+
+/* User avatar */
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--color-highlight);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Overall application layout */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Main area beside the sidebar */
+.main-area {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Individual page content */
+.main-content {
+    flex: 1;
+    padding: var(--spacing-xl);
+}

@@ -1,0 +1,13 @@
+:root {
+    /* Bootstrap theme colours */
+    --bs-primary: var(--color-primary);
+    --bs-primary-rgb: 111, 146, 114;
+
+    /* Bootstrap typography */
+    --bs-body-font-family: var(--font-family);
+    --bs-body-color: var(--color-text);
+    --bs-body-bg: var(--color-background);
+
+    /* Bootstrap borders */
+    --bs-border-radius: var(--radius-md);
+}

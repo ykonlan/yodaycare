@@ -1,0 +1,65 @@
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+</head>
+
+
+<header class="top-navbar">
+
+    <!-- Page title -->
+    <div class="navbar-page-title">
+        <h5>{{ page_title|default:"Dashboard" }}</h5>
+    </div>
+
+    <!-- Navbar actions -->
+    <div class="navbar-actions">
+
+        <!-- Notifications -->
+        <button type="button" class="notification-button" aria-label="Notifications">
+            <span>♧</span>
+        </button>
+
+        <!-- User dropdown -->
+        <div class="dropdown">
+
+            <button
+                class="user-menu-button dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
+                <span class="user-avatar">
+                    {{ request.user.first_name|first|default:request.user.username|first|upper }}
+                </span>
+
+                <span class="user-name">
+                    {{ request.user.get_full_name|default:request.user.username }}
+                </span>
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+
+                <li>
+                    <span class="dropdown-item-text">
+                        {{ request.user.email }}
+                    </span>
+                </li>
+
+                <li><hr class="dropdown-divider"></li>
+
+                <li>
+                    <a class="dropdown-item" href="#">My Profile</a>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="#">Log out</a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</header>
