@@ -1,73 +1,102 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View All Parents</title>
+{% block title %}View All Parents | YoDayCare{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'users/css/view-all-parents.css' %}">
-    <script src="{% static 'users/js/view-all-parents.js' %}" defer></script>
-</head>
-<body>
-    <button id="add-parent">
-        Add Parent
-    </button>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone #1</th>
-            <th>Phone #2</th>
-        </tr>
+{% endblock %}
 
-        {% for parent in list %}
-            <tr>
-                <td>{{parent.id}}</td>
-                <td><a href="{% url 'update-parent' pk=parent.id %}">{{parent.first_name}}</a></td>
-                <td>{{parent.last_name}}</td>
-                <td>{{parent.email}}</td>
-                <td>{{parent.profile.user_phone_1}}</td>
-                <td>{{parent.profile.user_phone_2}}</td>
-            </tr>
-        {% endfor %}
-    </table>
+{% block content %}
 
+    <div class="parents-page">
+
+        <div class="page-header">
+            <h1>All Parents</h1>
+            <button id="add-parent" type="button">
+                Add Parent
+            </button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone #1</th>
+                    <th>Phone #2</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for parent in list %}
+                    <tr>
+                        <td>{{ parent.id }}</td>
+
+                        <td>
+                            <a href="{% url 'update-parent' pk=parent.id %}">
+                                {{ parent.first_name }}
+                            </a>
+                        </td>
+
+                        <td>{{ parent.last_name }}</td>
+                        <td>{{ parent.email }}</td>
+                        <td>{{ parent.profile.user_phone_1 }}</td>
+                        <td>{{ parent.profile.user_phone_2 }}</td>
+                    </tr>
+
+                {% empty %}
+                    <tr>
+                        <td colspan="6">No parents found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Add Parent Modal -->
     <div id="modal">
         <div id="modal-content">
+
             <div class="modal-header">
                 Add Parent
-                <button id="close-modal">&times;</button>
+                <button id="close-modal" type="button">&times;</button>
             </div>
 
             <form action="{% url 'create-new-user' user_type='parent' %}" method="POST">
                 {% csrf_token %}
 
                 {% if new_user_form.non_field_errors %}
-                    {{new_user_form.non_field_errors.0}}
+                    {{ new_user_form.non_field_errors.0 }}
                 {% endif %}
 
                 {% if new_user_profile_form.non_field_errors %}
-                    {{new_user_profile_form.non_field_errors.0}}
+                    {{ new_user_profile_form.non_field_errors.0 }}
                 {% endif %}
 
-                {{new_user_form.as_p}}
+                {{ new_user_form.as_p }}
 
-                {{new_user_profile_form.as_p}}
+                {{ new_user_profile_form.as_p }}
 
                 <button type="submit">Add Parent</button>
             </form>
+
         </div>
     </div>
-</body>
-</html>
 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            alert("{{ message|escapejs }}");
-        </script>
-    {% endfor %}
-{% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <script>
+                alert("{{ message|escapejs }}");
+            </script>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'users/js/view-all-parents.js' %}" defer></script>
+{% endblock %}

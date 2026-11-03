@@ -1,38 +1,75 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View All Wards</title>
+{% block title %}View All Wards | YoDayCare{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'wards/css/view-all-wards.css' %}">
-    <script src="{% static 'wards/js/view-all-wards.js' %}" defer></script>
-</head>
-<body>
-    <button id="add-ward">Add Ward</button>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Full Name</th>
-            <th>Ward Class</th>
-            <th>Ward Parent</th>
-        </tr>
+{% endblock %}
 
-        {% for ward in wards %}
-            <tr>
-                <td>{{ward.id}}</td>
-                <td><a href="{% url 'update-ward' pk=ward.id %}">{{ward.ward_name}}</a></td>
-                <td>{{ward.ward_class}}</td>
-                <td><a href="{% url 'update-parent' pk=ward.ward_parent.id %}">{{ward.ward_parent}}</a></td>
-                <td><a href="{% url 'add-daily-report' ward_id=ward.id %}"><button>Fill Daily Deets</button></a></td>
-                <td><a href="{% url 'view-daily-report' pk=ward.id %}"><button>View Daily Deets</button></a></td>
-            </tr>
-        {% endfor %}
-    </table>
+{% block content %}
 
+    <div class="wards-page">
+
+        <div class="page-header">
+            <h1>All Wards</h1>
+            <button id="add-ward" type="button">Add Ward</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Ward Class</th>
+                    <th>Ward Parent</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for ward in wards %}
+                    <tr>
+                        <td>{{ ward.id }}</td>
+
+                        <td>
+                            <a href="{% url 'update-ward' pk=ward.id %}">
+                                {{ ward.ward_name }}
+                            </a>
+                        </td>
+
+                        <td>{{ ward.ward_class }}</td>
+
+                        <td>
+                            <a href="{% url 'update-parent' pk=ward.ward_parent.id %}">
+                                {{ ward.ward_parent }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="{% url 'add-daily-report' ward_id=ward.id %}">
+                                <button type="button">Fill Daily Deets</button>
+                            </a>
+
+                            <a href="{% url 'view-daily-report' pk=ward.id %}">
+                                <button type="button">View Daily Deets</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">No wards found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Add Ward Modal -->
     <div id="modal">
         <div id="modal-content">
+
             <div class="modal-header">
                 Add Ward
                 <button id="close-modal" type="button">&times;</button>
@@ -42,42 +79,46 @@
                 {% csrf_token %}
 
                 {% if new_ward_form.non_field_errors %}
-                    {{new_ward_form.non_field_errors.0}}
+                    {{ new_ward_form.non_field_errors.0 }}
                 {% endif %}
 
                 {% if ward_allergy_formset.non_field_errors %}
-                    {{ward_allergy_formset.non_field_errors.0}}
+                    {{ ward_allergy_formset.non_field_errors.0 }}
                 {% endif %}
 
-                {{new_ward_form.as_p}}
+                {{ new_ward_form.as_p }}
 
                 <button id="add-allergy" type="button">Add Allergy</button>
 
                 <div id="allergy-forms">
-                    {{ward_allergy_formset.management_form}}
+                    {{ ward_allergy_formset.management_form }}
 
                     {% for form in ward_allergy_formset %}
-                        {{form.as_p}}
+                        {{ form.as_p }}
                     {% endfor %}
                 </div>
 
                 <template id="empty-allergy-forms">
-                    {{ward_allergy_formset.empty_form.as_p}}
+                    {{ ward_allergy_formset.empty_form.as_p }}
                 </template>
-
-                
 
                 <button type="submit">Add Ward</button>
             </form>
 
         </div>
     </div>
-</body>
-</html>
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            alert("{{ message|escapejs }}");
-        </script>
-    {% endfor %}
-{% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <script>
+                alert("{{ message|escapejs }}");
+            </script>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'wards/js/view-all-wards.js' %}" defer></script>
+{% endblock %}
+```

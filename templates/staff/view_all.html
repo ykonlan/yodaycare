@@ -1,80 +1,108 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View All Staff</title>
+{% block title %}View All Staff | YoDayCare{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'users/css/view-all-staff.css' %}">
-    <script src="{% static 'users/js/view-all-staff.js' %}" defer></script>
-</head>
-<body>
-    <button id="add-staff">Add Staff</button>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Classroom</th>
-            <th>Email</th>
-            <th>Phone #1</th>
-            <th>Phone #2</th>
-        </tr>
+{% endblock %}
 
-        {% for staf in list %}
-            <tr>
-                <td>{{staf.id}}</td>
-                <td><a href="{% url 'update-staff' pk=staf.id %}">{{staf.first_name}}</a></td>
-                <td>{{staf.last_name}}</td>
-                <td>{{staf.staff_profile.staff_classroom}}</td>
-                <td>{{staf.email}}</td>
-                <td>{{staf.profile.user_phone_1}}</td>
-                <td>{{staf.profile.user_phone_2}}</td>
-            </tr>
-        {% endfor %}
-    </table>
+{% block content %}
 
+    <div class="staff-page">
+
+        <div class="page-header">
+            <h1>All Staff</h1>
+            <button id="add-staff" type="button">Add Staff</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Classroom</th>
+                    <th>Email</th>
+                    <th>Phone #1</th>
+                    <th>Phone #2</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for staf in list %}
+                    <tr>
+                        <td>{{ staf.id }}</td>
+
+                        <td>
+                            <a href="{% url 'update-staff' pk=staf.id %}">
+                                {{ staf.first_name }}
+                            </a>
+                        </td>
+
+                        <td>{{ staf.last_name }}</td>
+                        <td>{{ staf.staff_profile.staff_classroom }}</td>
+                        <td>{{ staf.email }}</td>
+                        <td>{{ staf.profile.user_phone_1 }}</td>
+                        <td>{{ staf.profile.user_phone_2 }}</td>
+                    </tr>
+
+                {% empty %}
+                    <tr>
+                        <td colspan="7">No staff members found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Add Staff Modal -->
     <div id="modal">
         <div id="modal-content">
+
             <div class="modal-header">
                 Add Staff
-                <button id="close-modal">&times;</button>
+                <button id="close-modal" type="button">&times;</button>
             </div>
 
             <form action="{% url 'create-new-user' user_type='staff' %}" method="POST">
                 {% csrf_token %}
 
                 {% if new_user_form.non_field_errors %}
-                    {{new_user_form.non_field_errors.0}}
+                    {{ new_user_form.non_field_errors.0 }}
                 {% endif %}
 
                 {% if new_user_profile_form.non_field_errors %}
-                    {{new_user_profile_form.non_field_errors.0}}
+                    {{ new_user_profile_form.non_field_errors.0 }}
                 {% endif %}
 
                 {% if new_staff_form.non_field_errors %}
-                    {{new_staff_form.non_field_errors.0}}
+                    {{ new_staff_form.non_field_errors.0 }}
                 {% endif %}
 
-                {{new_user_form.as_p}}
+                {{ new_user_form.as_p }}
 
-                {{new_user_profile_form.as_p}}
+                {{ new_user_profile_form.as_p }}
 
-                {{new_staff_form.as_p}}
+                {{ new_staff_form.as_p }}
 
                 <button type="submit">Add Staff</button>
             </form>
 
         </div>
     </div>
-</body>
-</html>
 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            alert("{{ message|escapejs }}");
-        </script>
-    {% endfor %}
-{% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <script>
+                alert("{{ message|escapejs }}");
+            </script>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'users/js/view-all-staff.js' %}" defer></script>
+{% endblock %}

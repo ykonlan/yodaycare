@@ -1,77 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>See Daily Report</title>
-</head>
-<body>
-    <form action="{% url 'view-daily-report' pk=ward.id %}" method="get">
-        {% csrf_token %}
+```django
+{% extends "base.html" %}
 
-        <input type="date" name="date">
+{% block title %}See Daily Report | YoDayCare{% endblock %}
 
-        <button type="submit">Submit</button>
-    </form>
+{% block content %}
 
-    <h1>Daily Report for {{daily_report.daily_details_ward.ward_name}} on {{daily_report.daily_details_date}}</h1>
-    <p>
-        Date : {{daily_report.daily_details_date}}
-    </p>
+    <div class="daily-report-page">
 
-    <p>
-        Ward name : {{daily_report.daily_details_ward.ward_name}}
-    </p>
+        <!-- Date selection -->
+        <div class="page-header">
+            <div>
+                <h1>Daily Report</h1>
+                <p>View a ward's daily activities and records.</p>
+            </div>
+        </div>
 
-    <p>
-        <h2>Meds</h2>
-        {% for med in meds %}
+        <form action="{% url 'view-daily-report' pk=ward.id %}" method="get">
+            <label for="report-date">Select date</label>
+            <input type="date" id="report-date" name="date">
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- Report information -->
+        <div class="report-header">
+            <h2>
+                {{ daily_report.daily_details_ward.ward_name }}
+            </h2>
+
             <p>
-                Medication : {{med.med_name}}<br>
-                Medication Time : {{med.med_time}}
+                Date: {{ daily_report.daily_details_date }}
             </p>
-        {% endfor %}
-    </p>
+        </div>
 
-    <p>
-        <h2>Meals</h2>
-        {% for meal in meals %}
-            <p>
-                Meal : {{meal.meal_name}}<br>
-                Meal Time : {{meal.meal_time}}
-            </p>
-        {% endfor %}
-    </p>
+        <!-- Medication -->
+        <section class="report-section">
+            <h3>Medications</h3>
 
-    <p>
-        <h2>Naps</h2>
-        {% for nap in naps %}
-            <p>
-                Nap Start Time : {{nap.nap_start_time}}<br>
-                Nap End Time : {{nap.nap_end_time}}
-            </p>
-        {% endfor %}
-    </p>
+            {% for med in meds %}
+                <div class="report-item">
+                    <p>Medication: {{ med.med_name }}</p>
+                    <p>Medication Time: {{ med.med_time }}</p>
+                </div>
+            {% empty %}
+                <p>No medication recorded.</p>
+            {% endfor %}
+        </section>
 
-    <p>
-        <h2>Extra Needs</h2>
-        <p>
-            {{daily_report.daily_details_extra_needs}}
-        </p>
-    </p>
+        <!-- Meals -->
+        <section class="report-section">
+            <h3>Meals</h3>
 
-    <p>
-        <h2>Ward's General Mood</h2>
-        <p>
-            {{daily_report.daily_details_general_mood}}
-        </p>
-    </p>
+            {% for meal in meals %}
+                <div class="report-item">
+                    <p>Meal: {{ meal.meal_name }}</p>
+                    <p>Meal Time: {{ meal.meal_time }}</p>
+                </div>
+            {% empty %}
+                <p>No meals recorded.</p>
+            {% endfor %}
+        </section>
 
-    <p>
-        <h2>Special Behaavior</h2>
-        <p>
-            {{daily_report.daily_details_special_behavior}}
-        </p>
-    </p>
-</body>
-</html>
+        <!-- Naps -->
+        <section class="report-section">
+            <h3>Naps</h3>
+
+            {% for nap in naps %}
+                <div class="report-item">
+                    <p>Nap Start Time: {{ nap.nap_start_time }}</p>
+                    <p>Nap End Time: {{ nap.nap_end_time }}</p>
+                </div>
+            {% empty %}
+                <p>No naps recorded.</p>
+            {% endfor %}
+        </section>
+
+        <!-- Additional information -->
+        <section class="report-section">
+            <h3>Extra Needs</h3>
+            <p>{{ daily_report.daily_details_extra_needs|default:"None recorded." }}</p>
+        </section>
+
+        <section class="report-section">
+            <h3>Ward's General Mood</h3>
+            <p>{{ daily_report.daily_details_general_mood|default:"Not recorded." }}</p>
+        </section>
+
+        <section class="report-section">
+            <h3>Special Behaviour</h3>
+            <p>{{ daily_report.daily_details_special_behavior|default:"None recorded." }}</p>
+        </section>
+
+    </div>
+
+{% endblock %}
+```

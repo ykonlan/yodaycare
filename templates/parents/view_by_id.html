@@ -1,42 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Parent</title>
-</head>
-<body>
-    <form action="{% url 'update-parent' pk=parent.id %}" method="post">
-        {% csrf_token %}
+{% extends "base.html" %}
 
-        {{parent_form.as_p}}
+{% block title %}Edit Parent | YoDayCare{% endblock %}
 
-        {{parent_profile_form.as_p}}
+{% block content %}
 
-        <button type="submit">Submit</button>
-    </form>
+<div class="edit-parent-page">
 
+    <div class="page-header">
+        <h1>Edit Parent</h1>
+        <p>Update the parent's information.</p>
+    </div>
+
+    <!-- Parent information form -->
+    <section class="form-section">
+        <form action="{% url 'update-parent' pk=parent.id %}" method="post">
+            {% csrf_token %}
+
+            <div class="parent-form">
+                {{ parent_form.as_p }}
+            </div>
+
+            <div class="parent-profile-form">
+                {{ parent_profile_form.as_p }}
+            </div>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </section>
+
+    <!-- Parent's wards -->
     {% if parent_wards %}
-        <table>
-            <tr>
-                <th>Ward Name</th>
-                <th>Ward Class</th>
-            </tr>
-            {% for ward in parent_wards %}
-                <tr>
-                    <td><a href="{% url 'update-ward' pk=ward.id %}">{{ward.ward_name}}</a></td>
-                    <td>{{ward.ward_class}}</td>
-                </tr>
-            {% endfor %}
-    {% endif %}
-        </table>
-</body>
-</html>
+        <section class="wards-section">
+            <h2>Parent's Wards</h2>
 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            alert("{{ message|escapejs }}");
-        </script>
-    {% endfor %}
-{% endif %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ward Name</th>
+                        <th>Ward Class</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for ward in parent_wards %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'update-ward' pk=ward.id %}">
+                                    {{ ward.ward_name }}
+                                </a>
+                            </td>
+                            <td>{{ ward.ward_class }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <script>
+                alert("{{ message|escapejs }}");
+            </script>
+        {% endfor %}
+    {% endif %}
+
+</div>
+
+{% endblock %}

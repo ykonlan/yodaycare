@@ -1,64 +1,92 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Report</title>
+{% block title %}Daily Report | YoDayCare{% endblock %}
+
+{% block content %}
+
+    <div class="daily-report-page">
+
+        <div class="page-header">
+            <h1>Daily Report</h1>
+            <p>
+                {{ ward.ward_name }} · {% now "Y-m-d" %}
+            </p>
+        </div>
+
+        <form action="{% url 'add-daily-report' ward_id=ward.id %}" method="post">
+            {% csrf_token %}
+
+            <section id="main-report">
+                {{ daily_deet_form.as_p }}
+            </section>
+
+            <section id="med-form">
+                <h2>Medication</h2>
+                <button id="add-med" type="button">Add Med</button>
+
+                {{ med_form.management_form }}
+
+                {% for form in med_form %}
+                    {{ form.as_p }}
+                {% endfor %}
+            </section>
+
+            <section id="meal-form">
+                <h2>Meals</h2>
+                <button id="add-meal" type="button">Add Meal</button>
+
+                {{ meal_form.management_form }}
+
+                {% for form in meal_form %}
+                    {{ form.as_p }}
+                {% endfor %}
+            </section>
+
+            <section id="nap-form">
+                <h2>Naps</h2>
+                <button id="add-nap" type="button">Add Nap</button>
+
+                {{ nap_form.management_form }}
+
+                {% for form in nap_form %}
+                    {{ form.as_p }}
+                {% endfor %}
+            </section>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <template id="empty-med-template">
+            <div id="empty-med-form">
+                {{ med_form.empty_form.as_p }}
+            </div>
+        </template>
+
+        <template id="empty-meal-template">
+            <div id="empty-meal-form">
+                {{ meal_form.empty_form.as_p }}
+            </div>
+        </template>
+
+        <template id="empty-nap-template">
+            <div id="empty-nap-form">
+                {{ nap_form.empty_form.as_p }}
+            </div>
+        </template>
+
+        {% if messages %}
+            {% for message in messages %}
+                <script>
+                    alert("{{ message|escapejs }}");
+                </script>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
     <script src="{% static 'daily_details/js/add.js' %}" defer></script>
-</head>
-<body>
-    <h1>Daily Report for {{ward.ward_name}} on {% now "Y-m-d" %}</h1>
-    <form action="{% url 'add-daily-report' ward_id=ward.id %}" method="post">
-        {% csrf_token %}
-        <div id="main-report">    
-            {{daily_deet_form.as_p}}
-        </div>
-
-        <div id="med-form">
-            <button id="add-med" type="button">Add Med</button>
-            {{med_form.as_p}}
-        </div>
-
-        <div id="meal-form">   
-            <button id="add-meal" type="button">Add Meal</button> 
-            {{meal_form.as_p}}
-        </div>
-
-        <div id="nap-form">  
-            <button id="add-nap" type="button">Add Nap</button>  
-            {{nap_form.as_p}}
-        </div>
-
-        <button type="submit">Submit</button>
-    </form>
-
-    <template id="empty-med-template">
-        <div id="empty-med-form">
-            {{med_form.empty_form.as_p}}
-        </div>
-    </template>
-
-    <template id="empty-meal-template">
-        <div id="empty-meal-form">
-            {{meal_form.empty_form.as_p}}
-        </div>
-    </template>
-
-    <template id="empty-nap-template">
-        <div id="empty-nap-form">
-            {{nap_form.empty_form.as_p}}
-        </div>
-    </template>
-</body>
-</html>
-
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            alert("{{ message|escapejs }}");
-        </script>
-    {% endfor %}
-{% endif %}
-
+{% endblock %}
