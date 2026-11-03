@@ -66,43 +66,72 @@
 
     </div>
 
-    <!-- Add Ward Modal -->
-    <div id="modal">
-        <div id="modal-content">
+        <!-- Add Ward Modal -->
+    <div id="modal" class="custom-modal">
+        <div id="modal-content" class="custom-modal-content">
 
-            <div class="modal-header">
-                Add Ward
-                <button id="close-modal" type="button">&times;</button>
-            </div>
-
-            <form action="{% url 'create-new-ward' %}" method="POST">
-                {% csrf_token %}
-
-                {% if new_ward_form.non_field_errors %}
-                    {{ new_ward_form.non_field_errors.0 }}
-                {% endif %}
-
-                {% if ward_allergy_formset.non_field_errors %}
-                    {{ ward_allergy_formset.non_field_errors.0 }}
-                {% endif %}
-
-                {{ new_ward_form.as_p }}
-
-                <button id="add-allergy" type="button">Add Allergy</button>
-
-                <div id="allergy-forms">
-                    {{ ward_allergy_formset.management_form }}
-
-                    {% for form in ward_allergy_formset %}
-                        {{ form.as_p }}
-                    {% endfor %}
+            <div class="custom-modal-header">
+                <div>
+                    <h2>Add Ward</h2>
+                    <p>Enter the child's information below.</p>
                 </div>
 
-                <template id="empty-allergy-forms">
-                    {{ ward_allergy_formset.empty_form.as_p }}
-                </template>
+                <button id="close-modal" type="button" class="modal-close">
+                    &times;
+                </button>
+            </div>
 
-                <button type="submit">Add Ward</button>
+            <form action="{% url 'create-new-ward' %}" method="POST" class="custom-modal-form">
+                {% csrf_token %}
+
+                <div class="custom-modal-body">
+
+                    {% if new_ward_form.non_field_errors %}
+                        {{ new_ward_form.non_field_errors }}
+                    {% endif %}
+
+                    {% if ward_allergy_formset.non_field_errors %}
+                        {{ ward_allergy_formset.non_field_errors }}
+                    {% endif %}
+
+                    <section class="modal-form-section">
+                        <h3>Ward Information</h3>
+                        {{ new_ward_form.as_p }}
+                    </section>
+
+                    <section class="modal-form-section allergy-section">
+                        <div class="allergy-heading">
+                            <h3>Allergies</h3>
+                            <button id="add-allergy" type="button" class="secondary-button">
+                                + Add Allergy
+                            </button>
+                        </div>
+
+                        <div id="allergy-forms">
+                            {{ ward_allergy_formset.management_form }}
+
+                            {% for form in ward_allergy_formset %}
+                                <div class="allergy-form">
+                                    {{ form.as_p }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <template id="empty-allergy-forms">
+                            <div class="allergy-form">
+                                {{ ward_allergy_formset.empty_form.as_p }}
+                            </div>
+                        </template>
+                    </section>
+
+                </div>
+
+                <div class="custom-modal-footer">
+                    <button type="submit" class="primary-button">
+                        Add Ward
+                    </button>
+                </div>
+
             </form>
 
         </div>
@@ -121,4 +150,3 @@
 {% block extra_js %}
     <script src="{% static 'wards/js/view-all-wards.js' %}" defer></script>
 {% endblock %}
-```

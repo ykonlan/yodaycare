@@ -1,27 +1,206 @@
-#modal{
+/* Modal backdrop */
+#modal.custom-modal {
+    display: none;
     position: fixed;
     inset: 0;
-    display: none;
-    justify-content: center;
+    z-index: 1050;
+
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-}
+    justify-content: center;
 
-#modal-content{
-    background-color: white;
     padding: 24px;
+    background-color: rgba(35, 45, 36, 0.55);
 }
 
-#close-modal{
-    justify-self: flex-end;
+#modal.custom-modal.show {
+    display: flex;
 }
 
-.modal-header{
+/* Modal window */
+#modal-content.custom-modal-content {
     width: 100%;
+    max-width: 600px;
+    height: 90vh;
+    max-height: 800px;
+
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+
+    padding: 0;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
-#modal.show{
+/* Header */
+.custom-modal-header {
     display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    padding: 24px;
+    border-bottom: 1px solid #E8EAE6;
+    flex-shrink: 0;
+}
+
+.custom-modal-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 4px;
+}
+
+.custom-modal-header p {
+    font-size: 13px;
+    color: #7A827B;
+    margin: 0;
+}
+
+.modal-close {
+    border: none;
+    background: none;
+    color: #7A827B;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+/* Form */
+.custom-modal-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Scrollable body */
+.custom-modal-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 24px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* Form sections */
+.modal-form-section {
+    margin-bottom: 24px;
+}
+
+.modal-form-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.custom-modal-body p {
+    margin-bottom: 16px;
+}
+
+.custom-modal-body label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.custom-modal-body input:not([type="checkbox"]):not([type="radio"]),
+.custom-modal-body select,
+.custom-modal-body textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #DDE1DC;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-family);
+    font-size: 14px;
+}
+
+.custom-modal-body input:focus,
+.custom-modal-body select:focus,
+.custom-modal-body textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(111, 146, 114, 0.15);
+}
+
+/* Allergies */
+.allergy-section {
+    padding-top: 20px;
+    border-top: 1px solid #E8EAE6;
+}
+
+.allergy-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.allergy-heading h3 {
+    margin: 0;
+}
+
+.allergy-form {
+    padding: 16px;
+    margin-bottom: 12px;
+    background-color: var(--color-background);
+    border-radius: var(--radius-sm);
+}
+
+/* Buttons */
+.primary-button,
+.secondary-button {
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.primary-button {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.primary-button:hover {
+    background-color: var(--color-primary-light);
+}
+
+.secondary-button {
+    background-color: var(--color-highlight);
+    color: var(--color-text);
+}
+
+.secondary-button:hover {
+    background-color: #C9DEC9;
+}
+
+/* Footer */
+.custom-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 24px;
+    border-top: 1px solid #E8EAE6;
+    background-color: var(--color-surface);
+    flex-shrink: 0;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    #modal.custom-modal {
+        padding: 12px;
+    }
+
+    #modal-content.custom-modal-content {
+        height: 95vh;
+    }
+
+    .custom-modal-header,
+    .custom-modal-body {
+        padding: 18px;
+    }
 }

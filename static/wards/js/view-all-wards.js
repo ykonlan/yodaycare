@@ -10,6 +10,18 @@ closeModalBtn.addEventListener("click", function(e){
     console.log(modal_box.className);
 })
 
+modal_box.addEventListener("click", function(e) {
+    if (e.target === modal_box) {
+        modal_box.classList.remove("show");
+    }
+});
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+        modal_box.classList.remove("show");
+    }
+});
+
 let emptyFormTemplate = document.querySelector("#empty-allergy-forms");
 let allergyBtn = document.querySelector("#add-allergy");
 let totalFormsInput = document.querySelector("input[name='allergies-TOTAL_FORMS']");

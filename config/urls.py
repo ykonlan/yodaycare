@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from users.views import CustomLoginView, ProfileDashboard
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -25,5 +26,6 @@ urlpatterns = [
     path("users/", include("users.urls")),
     path("dashboard", ProfileDashboard.as_view(), name="dashboard"),
     path("wards/", include("wards.urls")),
-    path("daily-details/", include("daily_details.urls"))
+    path("daily-details/", include("daily_details.urls")),
+    path("logout/", LogoutView.as_view(), name="logout")
 ]
