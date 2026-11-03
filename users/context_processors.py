@@ -1,6 +1,6 @@
 def user_roles(request):
     user = request.user
-    if not user.is_authenticated():
+    if not user.is_authenticated:
         return {
             "is_daycare_admin" : False,
             "is_daycare_staff" : False,
