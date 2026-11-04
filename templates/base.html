@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +14,9 @@
         rel="stylesheet"
     >
 
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -25,11 +29,45 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}">
+
     
     {% block extra_css %}{% endblock %}
 </head>
 
 <body>
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+    {% for message in messages %}
+        <div class="toast toast-{{ message.tags }} shadow-sm mb-2"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            data-bs-delay="4000">
+
+            <div class="toast-header">
+                {% if message.tags == "success" %}
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                {% elif message.tags == "error" %}
+                    <i class="bi bi-exclamation-circle-fill text-danger me-2"></i>
+                {% else %}
+                    <i class="bi bi-info-circle-fill text-primary me-2"></i>
+                {% endif %}
+
+                <strong class="me-auto">
+                    {{ message.tags|capfirst }}
+                </strong>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="toast"></button>
+            </div>
+
+            <div class="toast-body">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
     <div class="app-container">
 
@@ -50,8 +88,20 @@
 
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const toastElements = document.querySelectorAll(".toast");
 
-    {% block extra_js %}{% endblock %}
+        toastElements.forEach(function (toastElement) {
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        });
+        });
+    </script>
+
+    {% block extra_js %}
+        
+    {% endblock %}
 
 </body>
 </html>

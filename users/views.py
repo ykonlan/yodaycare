@@ -205,7 +205,7 @@ class UpdateStaffView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
             user_profile_form = AddUserProfileForm(self.request.POST, instance=self.object.profile)
-            staff_profile_form = EditStaffProfileForm(self.request.POST, instance=self.object.staff_profile.first())
+            staff_profile_form = EditStaffProfileForm(self.request.POST, instance=self.object.staff_profile)
             if not user_profile_form.is_valid():
                 context = self.get_context_data(form=form)
                 context["user_profile_form"] = user_profile_form
@@ -230,6 +230,7 @@ class UpdateStaffView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
                 self.object.save()
                 user_profile_form.save()
                 staff_profile_form.save()
+                messages.success(self.request, f"Staff {self.object.first_name} {self.object.last_name} updated successfully!")
     
             return HttpResponseRedirect(self.get_success_url())
 

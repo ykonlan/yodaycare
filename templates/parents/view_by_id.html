@@ -1,18 +1,37 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Edit Parent | YoDayCare{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'users/css/view-parent-by-id.css' %}">
+{% endblock %}
 
 {% block content %}
 
 <div class="edit-parent-page">
 
-    <div class="page-header">
-        <h1>Edit Parent</h1>
-        <p>Update the parent's information.</p>
+    <!-- Page heading -->
+    <div class="page-header mb-4">
+        <div>
+            <h1>Edit Parent</h1>
+            <p>Manage parent information and registered children.</p>
+        </div>
     </div>
 
-    <!-- Parent information form -->
-    <section class="form-section">
+    <!-- Parent information -->
+    <section class="parent-info-card mb-4">
+
+        <div class="section-heading">
+            <div class="section-icon">
+                <i class="bi bi-person-lines-fill"></i>
+            </div>
+            <div>
+                <h2>Parent Information</h2>
+                <p>Update the parent's personal and contact details.</p>
+            </div>
+        </div>
+
         <form action="{% url 'update-parent' pk=parent.id %}" method="post">
             {% csrf_token %}
 
@@ -24,46 +43,83 @@
                 {{ parent_profile_form.as_p }}
             </div>
 
-            <button type="submit">Save Changes</button>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check2-circle me-2"></i>
+                    Save Changes
+                </button>
+            </div>
         </form>
+
     </section>
 
     <!-- Parent's wards -->
-    {% if parent_wards %}
-        <section class="wards-section">
-            <h2>Parent's Wards</h2>
+    <section class="wards-section">
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Ward Name</th>
-                        <th>Ward Class</th>
-                    </tr>
-                </thead>
+        <div class="section-heading">
+            <div class="section-icon">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div>
+                <h2>Parent's Wards</h2>
+                <p>Children currently registered under this parent.</p>
+            </div>
+            <span class="wards-count">
+                {{ parent_wards|length }} 
+                {% if parent_wards|length == 1 %}Child{% else %}Children{% endif %}
+            </span>
+        </div>
 
-                <tbody>
-                    {% for ward in parent_wards %}
+        {% if parent_wards %}
+            <div class="table-responsive">
+                <table class="table wards-table align-middle mb-0">
+                    <thead>
                         <tr>
-                            <td>
-                                <a href="{% url 'update-ward' pk=ward.id %}">
-                                    {{ ward.ward_name }}
-                                </a>
-                            </td>
-                            <td>{{ ward.ward_class }}</td>
+                            <th>Ward Name</th>
+                            <th>Ward Class</th>
+                            <th class="text-end">Action</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </section>
-    {% endif %}
+                    </thead>
 
-    {% if messages %}
-        {% for message in messages %}
-            <script>
-                alert("{{ message|escapejs }}");
-            </script>
-        {% endfor %}
-    {% endif %}
+                    <tbody>
+                        {% for ward in parent_wards %}
+                            <tr>
+                                <td>
+                                    <div class="ward-name">
+                                        <div class="ward-avatar">
+                                            <i class="bi bi-person-fill"></i>
+                                        </div>
+                                        <span>{{ ward.ward_name }}</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="class-label">
+                                        {{ ward.ward_class }}
+                                    </span>
+                                </td>
+
+                                <td class="text-end">
+                                    <a href="{% url 'update-ward' pk=ward.id %}"
+                                       class="ward-action">
+                                        View Details
+                                        <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-wards">
+                <i class="bi bi-people"></i>
+                <h3>No children registered</h3>
+                <p>This parent does not currently have any registered wards.</p>
+            </div>
+        {% endif %}
+
+    </section>
 
 </div>
 
