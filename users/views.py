@@ -6,18 +6,22 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from users.forms import AddUserForm, AddUserProfileForm, StaffProfileForm, EditStaffProfileForm
-from users.models import UserProfile, StaffProfile
+from users.models import UserProfile, StaffProfile, User
 from django.db import transaction
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
+from wards.models import Ward, Classroom
+from django.core.paginator import Paginator
+
 
 # Create your views here.
 class AllParentsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = User
     template_name = "parents/view_all.html"
     context_object_name = "list"
+    paginate_by = 20
 
     def test_func(self):
         user = self.request.user
@@ -25,7 +29,7 @@ class AllParentsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def get_queryset(self):
         parent_group = Group.objects.get(name="Parents")
-        return User.objects.filter(groups=parent_group)
+        return User.objects.filter(groups=parent_group).order_by("id")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -33,14 +37,15 @@ class AllParentsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         context["new_user_profile_form"] = AddUserProfileForm()
         return context
 
-
 class AllStaffView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = User
     template_name = "staff/view_all.html"
     context_object_name = "list"
+    paginate_by = 20
+
     def get_queryset(self):
         staff_group = Group.objects.get(name="Staff")
-        return User.objects.filter(groups=staff_group)
+        return User.objects.filter(groups=staff_group).order_by("id")
 
     def test_func(self):
             user = self.request.user
@@ -64,7 +69,21 @@ class ProfileDashboard(LoginRequiredMixin, View):
     def get(self, request):
         user = self.request.user
         if user.groups.filter(name="Administrators").exists():
-            return render(request, "staff/admin-dashboard.html")
+            total_wards = Ward.objects.count()
+            total_parents = User.objects.filter(groups__name="Parents").count()
+            total_staff = User.objects.filter(groups__name="Staff").count()
+            total_classrooms = Classroom.objects.count()
+            classrooms = Classroom.objects.all()
+            recent_wards = Ward.objects.order_by("-ward_date_added")[:5]
+            context = {
+                "total_wards" : total_wards,
+                "total_parents" : total_parents,
+                "total_staff" : total_staff,
+                "total_classrooms" : total_classrooms,
+                "recent_wards" : recent_wards,
+                "classrooms" : classrooms
+            }
+            return render(request, "staff/admin-dashboard.html", context)
         elif user.groups.filter(name="Staff").exists():
             return render(request, "staff/staff-dashboard.html")
         elif user.groups.filter(name="Parents").exists():

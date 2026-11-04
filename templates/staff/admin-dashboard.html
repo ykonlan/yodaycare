@@ -1,1 +1,202 @@
-{% extends "../pages/dashboard.html" %}
+{% extends "pages/dashboard.html" %}
+{% load static %}
+
+{% block title %}Admin Dashboard | YoDayCare{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'users/css/admin-dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-0 admin-dashboard">
+
+    <!-- Welcome header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-semibold mb-1">
+                Welcome back, {{ request.user.first_name|default:request.user.username }}!
+            </h1>
+            <p class="text-secondary mb-0">
+                Here's what's happening at YoDayCare.
+            </p>
+        </div>
+        <span class="text-secondary small">
+            {% now "l, j F Y" %}
+        </span>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card dashboard-stat-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <p class="text-secondary small mb-2">Total Children</p>
+                    <h2 class="h3 fw-semibold mb-0">{{ total_wards }}</h2>
+                    <small class="text-secondary">Registered children</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card dashboard-stat-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <p class="text-secondary small mb-2">Total Parents</p>
+                    <h2 class="h3 fw-semibold mb-0">{{ total_parents }}</h2>
+                    <small class="text-secondary">Registered parents</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card dashboard-stat-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <p class="text-secondary small mb-2">Total Staff</p>
+                    <h2 class="h3 fw-semibold mb-0">{{ total_staff }}</h2>
+                    <small class="text-secondary">Active staff accounts</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card dashboard-stat-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <p class="text-secondary small mb-2">Classrooms</p>
+                    <h2 class="h3 fw-semibold mb-0">{{ total_classrooms }}</h2>
+                    <small class="text-secondary">Available classrooms</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Main dashboard sections -->
+    <div class="row g-4 mb-4">
+
+        <!-- Classroom overview -->
+        <div class="col-12 col-xl-7">
+            <div class="card dashboard-panel h-100 border-0 shadow-sm">
+
+                <div class="card-header bg-white border-0 px-4 pt-4">
+                    <h2 class="h5 fw-semibold mb-1">Classroom Overview</h2>
+                    <p class="text-secondary small mb-0">
+                        A quick look at your classrooms.
+                    </p>
+                </div>
+
+                <div class="card-body px-4">
+                    {% for classroom in classrooms %}
+                        <div class="classroom-row d-flex justify-content-between align-items-center py-3">
+                            <div>
+                                <h3 class="h6 fw-semibold mb-1">
+                                    {{ classroom.class_name }}
+                                </h3>
+                                <small class="text-secondary">Classroom</small>
+                            </div>
+
+                            <span class="badge rounded-pill classroom-count">
+                                {{ classroom.class_population }} children
+                            </span>
+                        </div>
+                    {% empty %}
+                        <p class="text-secondary text-center py-4 mb-0">
+                            No classrooms have been created yet.
+                        </p>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="col-12 col-xl-5">
+            <div class="card dashboard-panel h-100 border-0 shadow-sm">
+
+                <div class="card-header bg-white border-0 px-4 pt-4">
+                    <h2 class="h5 fw-semibold mb-1">Quick Actions</h2>
+                    <p class="text-secondary small mb-0">
+                        Common administrative tasks.
+                    </p>
+                </div>
+
+                <div class="card-body px-4 d-flex flex-column gap-3">
+
+                    <a href="{% url 'wards-view-all' %}"
+                       class="quick-action-link">
+                        <span>+ Register a Child</span>
+                        <span>&rarr;</span>
+                    </a>
+
+                    <a href="{% url 'parents-view-all' %}"
+                       class="quick-action-link">
+                        <span>+ Add a Parent</span>
+                        <span>&rarr;</span>
+                    </a>
+
+                    <a href="{% url 'staff-view-all' %}"
+                       class="quick-action-link">
+                        <span>+ Add Staff</span>
+                        <span>&rarr;</span>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Recently registered children -->
+    <div class="card dashboard-panel border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 px-4 pt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="h5 fw-semibold mb-1">Recently Registered Children</h2>
+                    <p class="text-secondary small mb-0">
+                        The latest children added to YoDayCare.
+                    </p>
+                </div>
+
+                <a href="{% url 'wards-view-all' %}"
+                   class="dashboard-view-link">
+                    View all
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body px-4">
+            <div class="table-responsive">
+                <table class="table align-middle dashboard-table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Child</th>
+                            <th>Classroom</th>
+                            <th>Date Registered</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for ward in recent_wards %}
+                            <tr>
+                                <td class="fw-medium">{{ ward.ward_name }}</td>
+                                <td>{{ ward.ward_class.class_name|default:"Unassigned" }}</td>
+                                <td>{{ ward.ward_date_added|date:"d M Y" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center text-secondary py-4">
+                                    No children have been registered yet.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

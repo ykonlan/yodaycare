@@ -1,0 +1,87 @@
+
+.admin-dashboard {
+    color: var(--color-text);
+}
+
+.dashboard-stat-card,
+.dashboard-panel {
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+}
+
+.dashboard-stat-card {
+    border-left: 4px solid var(--color-primary) !important;
+}
+
+.dashboard-stat-card .card-body {
+    padding: 22px;
+}
+
+.dashboard-panel .card-header {
+    border-radius: var(--radius-md);
+}
+
+.classroom-row {
+    border-bottom: 1px solid #E8EAE6;
+}
+
+.classroom-row:last-child {
+    border-bottom: none;
+}
+
+.classroom-count {
+    padding: 8px 12px;
+    background-color: var(--color-highlight);
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.quick-action-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border: 1px solid #E8EAE6;
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.quick-action-link:hover {
+    background-color: var(--color-highlight);
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.dashboard-view-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dashboard-view-link:hover {
+    color: var(--color-primary-light);
+}
+
+.dashboard-table thead th {
+    color: #7A827B;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-bottom: 1px solid #E8EAE6;
+}
+
+.dashboard-table tbody td {
+    font-size: 14px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.dashboard-table tbody tr:last-child td {
+    border-bottom: none;
+}
