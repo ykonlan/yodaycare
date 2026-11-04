@@ -1,0 +1,206 @@
+/* Page */
+.daily-report-page {
+    width: 100%;
+}
+
+.daily-report-page .page-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.daily-report-page .page-header p {
+    color: #7A827B;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+/* Date filter */
+.date-filter-card {
+    background-color: var(--color-surface);
+    border: 1px solid #E8EAE6;
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.date-filter-card form {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.date-filter-field {
+    width: 260px;
+}
+
+/* Main report container */
+.report-container {
+    background-color: var(--color-surface);
+    border: 1px solid #E8EAE6;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+/* Report heading */
+.report-heading {
+    padding: 28px 32px;
+    background-color: #F3F6F1;
+    border-bottom: 1px solid #E8EAE6;
+}
+
+.report-eyebrow {
+    display: block;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.report-heading h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+.report-heading p {
+    color: #7A827B;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Report content */
+.report-content {
+    padding: 28px 32px;
+}
+
+.report-group-heading {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.activities-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* Activity cards */
+.report-card {
+    border: 1px solid #E8EAE6;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    background-color: #FFFFFF;
+}
+
+.report-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E8EAE6;
+    margin-bottom: 8px;
+}
+
+.report-card-heading h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.report-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-highlight);
+    color: var(--color-primary);
+    border-radius: var(--radius-sm);
+    font-size: 18px;
+}
+
+/* Individual records */
+.report-item {
+    padding: 13px 0;
+    border-bottom: 1px solid #F0F1EE;
+}
+
+.report-item:last-child {
+    border-bottom: none;
+}
+
+.report-item-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+.report-item-detail {
+    font-size: 13px;
+    color: #7A827B;
+    margin: 3px 0;
+}
+
+.report-empty {
+    color: #8A928A;
+    font-size: 13px;
+    margin: 14px 0 6px;
+}
+
+/* Additional observations */
+.observations-heading {
+    margin-top: 32px;
+}
+
+.observations-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.observation-card {
+    padding: 20px;
+    background-color: #F8F9F6;
+    border: 1px solid #E8EAE6;
+    border-radius: var(--radius-md);
+}
+
+.observation-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.observation-card p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #626B63;
+    margin: 0;
+    white-space: pre-line;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+    .activities-grid,
+    .observations-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .report-content {
+        padding: 20px;
+    }
+
+    .report-heading {
+        padding: 24px 20px;
+    }
+
+    .date-filter-card form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .date-filter-field {
+        width: 100%;
+    }
+}

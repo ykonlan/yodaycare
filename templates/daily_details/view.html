@@ -1,97 +1,161 @@
-```django
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}See Daily Report | YoDayCare{% endblock %}
 
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'daily_details/css/view-daily-report.css' %}">
+{% endblock %}
+
 {% block content %}
 
-    <div class="daily-report-page">
+<div class="daily-report-page">
 
-        <!-- Date selection -->
-        <div class="page-header">
+    <!-- Page heading -->
+    <div class="page-header">
+        <div>
+            <h1>Daily Report</h1>
+            <p>View a ward's daily activities and records.</p>
+        </div>
+    </div>
+
+    <!-- Date selection -->
+    <div class="date-filter-card">
+        <form action="{% url 'view-daily-report' pk=ward.id %}" method="get">
+            <div class="date-filter-field">
+                <label for="report-date">Select report date</label>
+                <input type="date" id="report-date" name="date">
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                View Report
+            </button>
+        </form>
+    </div>
+
+    <!-- Report container -->
+    <div class="report-container">
+
+        <!-- Report header -->
+        <div class="report-heading">
             <div>
-                <h1>Daily Report</h1>
-                <p>View a ward's daily activities and records.</p>
+                <span class="report-eyebrow">DAILY CARE REPORT</span>
+                <h2>{{ daily_report.daily_details_ward.ward_name }}</h2>
+                <p>{{ daily_report.daily_details_date }}</p>
             </div>
         </div>
 
-        <form action="{% url 'view-daily-report' pk=ward.id %}" method="get">
-            <label for="report-date">Select date</label>
-            <input type="date" id="report-date" name="date">
+        <!-- Daily activities -->
+        <div class="report-content">
 
-            <button type="submit">Submit</button>
-        </form>
+            <h3 class="report-group-heading">Daily Activities</h3>
 
-        <!-- Report information -->
-        <div class="report-header">
-            <h2>
-                {{ daily_report.daily_details_ward.ward_name }}
-            </h2>
+            <div class="activities-grid">
 
-            <p>
-                Date: {{ daily_report.daily_details_date }}
-            </p>
+                <!-- Medication -->
+                <section class="report-card">
+                    <div class="report-card-heading">
+                        <div class="report-icon">✚</div>
+                        <h3>Medications</h3>
+                    </div>
+
+                    <div class="report-card-content">
+                        {% for med in meds %}
+                            <div class="report-item">
+                                <p class="report-item-title">{{ med.med_name }}</p>
+                                <p class="report-item-detail">
+                                    Time: {{ med.med_time }}
+                                </p>
+                            </div>
+                        {% empty %}
+                            <p class="report-empty">No medication recorded.</p>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <!-- Meals -->
+                <section class="report-card">
+                    <div class="report-card-heading">
+                        <div class="report-icon">♧</div>
+                        <h3>Meals</h3>
+                    </div>
+
+                    <div class="report-card-content">
+                        {% for meal in meals %}
+                            <div class="report-item">
+                                <p class="report-item-title">{{ meal.meal_name }}</p>
+                                <p class="report-item-detail">
+                                    Time: {{ meal.meal_time }}
+                                </p>
+                            </div>
+                        {% empty %}
+                            <p class="report-empty">No meals recorded.</p>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <!-- Naps -->
+                <section class="report-card">
+                    <div class="report-card-heading">
+                        <div class="report-icon">☾</div>
+                        <h3>Naps</h3>
+                    </div>
+
+                    <div class="report-card-content">
+                        {% for nap in naps %}
+                            <div class="report-item">
+                                <p class="report-item-title">
+                                    Nap {{ forloop.counter }}
+                                </p>
+                                <p class="report-item-detail">
+                                    Start: {{ nap.nap_start_time }}
+                                </p>
+                                <p class="report-item-detail">
+                                    End: {{ nap.nap_end_time }}
+                                </p>
+                            </div>
+                        {% empty %}
+                            <p class="report-empty">No naps recorded.</p>
+                        {% endfor %}
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Additional observations -->
+            <h3 class="report-group-heading observations-heading">
+                Additional Observations
+            </h3>
+
+            <div class="observations-grid">
+
+                <section class="observation-card">
+                    <h3>Extra Needs</h3>
+                    <p>
+                        {{ daily_report.daily_details_extra_needs|default:"None recorded." }}
+                    </p>
+                </section>
+
+                <section class="observation-card">
+                    <h3>General Mood</h3>
+                    <p>
+                        {{ daily_report.daily_details_general_mood|default:"Not recorded." }}
+                    </p>
+                </section>
+
+                <section class="observation-card">
+                    <h3>Special Behaviour</h3>
+                    <p>
+                        {{ daily_report.daily_details_special_behavior|default:"None recorded." }}
+                    </p>
+                </section>
+
+            </div>
+
         </div>
-
-        <!-- Medication -->
-        <section class="report-section">
-            <h3>Medications</h3>
-
-            {% for med in meds %}
-                <div class="report-item">
-                    <p>Medication: {{ med.med_name }}</p>
-                    <p>Medication Time: {{ med.med_time }}</p>
-                </div>
-            {% empty %}
-                <p>No medication recorded.</p>
-            {% endfor %}
-        </section>
-
-        <!-- Meals -->
-        <section class="report-section">
-            <h3>Meals</h3>
-
-            {% for meal in meals %}
-                <div class="report-item">
-                    <p>Meal: {{ meal.meal_name }}</p>
-                    <p>Meal Time: {{ meal.meal_time }}</p>
-                </div>
-            {% empty %}
-                <p>No meals recorded.</p>
-            {% endfor %}
-        </section>
-
-        <!-- Naps -->
-        <section class="report-section">
-            <h3>Naps</h3>
-
-            {% for nap in naps %}
-                <div class="report-item">
-                    <p>Nap Start Time: {{ nap.nap_start_time }}</p>
-                    <p>Nap End Time: {{ nap.nap_end_time }}</p>
-                </div>
-            {% empty %}
-                <p>No naps recorded.</p>
-            {% endfor %}
-        </section>
-
-        <!-- Additional information -->
-        <section class="report-section">
-            <h3>Extra Needs</h3>
-            <p>{{ daily_report.daily_details_extra_needs|default:"None recorded." }}</p>
-        </section>
-
-        <section class="report-section">
-            <h3>Ward's General Mood</h3>
-            <p>{{ daily_report.daily_details_general_mood|default:"Not recorded." }}</p>
-        </section>
-
-        <section class="report-section">
-            <h3>Special Behaviour</h3>
-            <p>{{ daily_report.daily_details_special_behavior|default:"None recorded." }}</p>
-        </section>
-
     </div>
 
+</div>
+
 {% endblock %}
-```

@@ -13,7 +13,9 @@
 
         <div class="page-header">
             <h1>All Wards</h1>
-            <button id="add-ward" type="button">Add Ward</button>
+            {% if is_daycare_admin %}
+                <button id="add-ward" type="button">Add Ward</button>
+            {% endif %}
         </div>
 
         <table>
@@ -32,24 +34,38 @@
                     <tr>
                         <td>{{ ward.id }}</td>
 
-                        <td>
-                            <a href="{% url 'update-ward' pk=ward.id %}">
-                                {{ ward.ward_name }}
-                            </a>
-                        </td>
+                        {% if is_daycare_admin %}
+                            <td>
+                                <a href="{% url 'update-ward' pk=ward.id %}">
+                                    {{ ward.ward_name }}
+                                </a>
+                            </td>
+                            {% else %}
+                                <td>
+                                    {{ ward.ward_name }}
+                                </td>
+                        {% endif %}
 
                         <td>{{ ward.ward_class }}</td>
 
-                        <td>
-                            <a href="{% url 'update-parent' pk=ward.ward_parent.id %}">
-                                {{ ward.ward_parent }}
-                            </a>
-                        </td>
+                        {% if is_daycare_admin %}
+                            <td>
+                                <a href="{% url 'update-parent' pk=ward.ward_parent.id %}">
+                                    {{ ward.ward_parent }}
+                                </a>
+                            </td>
+                            {% else %}
+                                <td>
+                                    {{ ward.ward_parent }}
+                                </td>
+                        {% endif %}
 
                         <td>
-                            <a href="{% url 'add-daily-report' ward_id=ward.id %}">
-                                <button type="button">Fill Daily Deets</button>
-                            </a>
+                            {% if is_daycare_admin or is_daycare_staff %}
+                                <a href="{% url 'add-daily-report' ward_id=ward.id %}">
+                                    <button type="button">Fill Daily Deets</button>
+                                </a>
+                            {% endif %}
 
                             <a href="{% url 'view-daily-report' pk=ward.id %}">
                                 <button type="button">View Daily Deets</button>
