@@ -32,14 +32,14 @@
             </a>
 
             {% if is_daycare_admin %}
-                <a href="{% url 'parents-view-all' %}" class="sidebar-link">
+                <a href="{% url 'parents-view-all' %}" class="sidebar-link {% if request.resolver_match.url_name == 'parents-view-all' %} active {% endif %}">
                     <span class="sidebar-icon">♙</span>
                     <span>Parents</span>
                 </a>
             {% endif %}
 
             {% if is_daycare_admin %}
-                <a href="{% url 'staff-view-all' %}" class="sidebar-link">
+                <a href="{% url 'staff-view-all' %}" class="sidebar-link {% if request.resolver_match.url_name == 'staff-view-all' %} active {% endif %}">
                     <span class="sidebar-icon">♙</span>
                     <span>Staff</span>
                 </a>

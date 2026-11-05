@@ -2,10 +2,12 @@ asgiref==3.12.1
 black==26.10.1
 click==8.5.0
 Django==5.0.14
+dotenv==0.9.9
 mypy_extensions==1.1.0
 packaging==26.3
 pathspec==1.1.1
 platformdirs==4.13.0
+python-dotenv==1.2.4
 pytokens==0.4.1
 sqlparse==0.6.0
 tzdata==2026.5

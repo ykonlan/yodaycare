@@ -7,7 +7,7 @@ from django.views import View
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from users.forms import AddUserForm, AddUserProfileForm, StaffProfileForm, EditStaffProfileForm
 from users.models import UserProfile, StaffProfile, User
-from django.db import transaction
+from django.db import transaction, models
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.template.response import TemplateResponse
@@ -73,7 +73,9 @@ class ProfileDashboard(LoginRequiredMixin, View):
             total_parents = User.objects.filter(groups__name="Parents").count()
             total_staff = User.objects.filter(groups__name="Staff").count()
             total_classrooms = Classroom.objects.count()
-            classrooms = Classroom.objects.all()
+            classrooms = Classroom.objects.annotate(
+                current_population = models.Count("ward")
+            )
             recent_wards = Ward.objects.order_by("-ward_date_added")[:5]
             context = {
                 "total_wards" : total_wards,
