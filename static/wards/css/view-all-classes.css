@@ -1,0 +1,223 @@
+.classrooms-page {
+    padding: 10px 5px 30px;
+}
+
+.classrooms-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.classrooms-header h2 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: #263b32;
+    margin-bottom: 5px;
+}
+
+.classrooms-header p {
+    color: #7b8982;
+    font-size: 0.92rem;
+    margin: 0;
+}
+
+.classrooms-card {
+    background: #fff;
+    border: 1px solid #e9efeb;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(30, 65, 48, 0.04);
+    overflow: hidden;
+}
+
+.classrooms-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 25px;
+    border-bottom: 1px solid #edf1ee;
+    gap: 15px;
+}
+
+.classrooms-card-header h4 {
+    color: #263b32;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.classrooms-card-header p {
+    color: #8a9690;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.classroom-count {
+    background: #edf6f0;
+    color: #347451;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.classrooms-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.classrooms-table thead {
+    background: #f8faf8;
+}
+
+.classrooms-table th {
+    color: #7b8982;
+    font-size: 0.77rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 15px 25px;
+    border-bottom: 1px solid #edf1ee;
+}
+
+.classrooms-table td {
+    padding: 17px 25px;
+    color: #52635a;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f0f3f1;
+    vertical-align: middle;
+}
+
+.classrooms-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.classrooms-table tbody tr:hover {
+    background: #fbfdfb;
+}
+
+.classroom-link {
+    color: #347451;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.classroom-link:hover {
+    color: #245638;
+    text-decoration: underline;
+}
+
+.classroom-link i {
+    font-size: 0.75rem;
+    margin-left: 4px;
+}
+
+.population-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #edf6f0;
+    color: #347451;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 55px 20px !important;
+}
+
+.empty-state > i {
+    display: block;
+    font-size: 2.2rem;
+    color: #a8b9ae;
+    margin-bottom: 12px;
+}
+
+.empty-state h5 {
+    color: #40564a;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.empty-state p {
+    color: #89958e;
+    margin: 0;
+}
+
+.classrooms-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 25px;
+    border-top: 1px solid #edf1ee;
+    gap: 15px;
+}
+
+.pagination-info {
+    color: #829087;
+    font-size: 0.82rem;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #e2eae4;
+    border-radius: 7px;
+    color: #347451;
+    text-decoration: none;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(.disabled) {
+    background: #edf6f0;
+    border-color: #c8ddce;
+}
+
+.pagination-btn.disabled {
+    color: #c2cbc5;
+    cursor: not-allowed;
+    background: #fafbfa;
+}
+
+.pagination-current {
+    color: #52635a;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0 8px;
+}
+
+@media (max-width: 576px) {
+    .classrooms-card-header,
+    .classrooms-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .classrooms-table th,
+    .classrooms-table td {
+        padding: 14px 15px;
+    }
+
+    .classrooms-pagination {
+        gap: 12px;
+    }
+
+    .pagination-controls {
+        align-self: flex-end;
+    }
+}

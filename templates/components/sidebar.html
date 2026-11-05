@@ -45,10 +45,10 @@
                 </a>
             {% endif %}
 
-            <!-- <a href="#" class="sidebar-link">
+            <a href="{% url 'classes-view-all' %}" class="sidebar-link {% if request.resolver_match.url_name == 'classes-view-all' %} active {% endif %}">
                 <span class="sidebar-icon">▦</span>
                 <span>Classrooms</span>
-            </a> -->
+            </a>
         </div>
 
         <!-- <div class="sidebar-section">

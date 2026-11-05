@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, UpdateView
-from wards.models import Ward, Allergy
+from wards.models import Ward, Allergy, Classroom
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from wards.forms import AddWardForm, AllergyFormSet
@@ -10,6 +10,9 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
+from django.db.models import Count
+from users.models import StaffProfile
+from django.core.paginator import Paginator
 
 # Create your views here.
 class AllWardsView(LoginRequiredMixin, ListView):
@@ -102,6 +105,44 @@ class ShowWardView(LoginRequiredMixin, View):
             "allergies" : ward_allergies
         }
         return render(request, "wards/view_only_by_id.html", context)
+
+class AllClassroomsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Classroom
+    template_name = "wards/view_all_classes.html"
+    context_object_name = "classrooms"
+    paginate_by = 20
+
+    def test_func(self):
+        return self.request.user.groups.filter(name="Administrators").exists()
+
+    def get_queryset(self):
+        return Classroom.objects.annotate(
+                current_population = Count("ward")
+                )
+
+class ShowClassView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.groups.filter(name="Administrators").exists()
+
+    def get(self, request, *args, **kwargs):
+        class_id = kwargs["pk"]
+        classroom = Classroom.objects.annotate(current_population=Count("ward")).filter(id=class_id).first()
+        classroom_wards = Ward.objects.filter(ward_class=classroom)
+        paginator = Paginator(classroom_wards, 10)
+        page_number = request.GET.get("page", 1)
+        page_obj = paginator.get_page(page_number)
+        context = {
+            "classroom" : classroom,
+            "classroom_staff" : StaffProfile.objects.filter(staff_classroom=classroom),
+            "page_obj" : page_obj,
+            "is_paginated" : page_obj.has_other_pages()
+        }
+        return render(request, "wards/view_class_by_id.html", context)
+    
+    
+
+    
+
 
         
 

@@ -1,0 +1,368 @@
+.class-details-page {
+    padding: 10px 5px 30px;
+}
+
+.class-details-header {
+    margin-bottom: 25px;
+}
+
+.class-details-header h2 {
+    color: #263b32;
+    font-size: 1.65rem;
+    font-weight: 700;
+    margin: 12px 0 5px;
+}
+
+.class-details-header p {
+    color: #7b8982;
+    font-size: 0.92rem;
+    margin: 0;
+}
+
+.back-link {
+    color: #347451;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #245638;
+}
+
+.class-overview-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    background: #fff;
+    border: 1px solid #e9efeb;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(30, 65, 48, 0.04);
+    margin-bottom: 25px;
+}
+
+.class-overview-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+    flex-shrink: 0;
+    background: #edf6f0;
+    color: #347451;
+    border-radius: 13px;
+    font-size: 1.8rem;
+}
+
+.class-overview-info {
+    flex: 1;
+}
+
+.class-overview-info > span {
+    color: #8a9690;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.class-overview-info h3 {
+    color: #263b32;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 5px 0;
+}
+
+.class-overview-info p {
+    color: #89958e;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.class-overview-population {
+    padding-left: 25px;
+    border-left: 1px solid #e9efeb;
+    text-align: center;
+}
+
+.class-overview-population > span {
+    display: block;
+    color: #89958e;
+    font-size: 0.78rem;
+}
+
+.class-overview-population h2 {
+    color: #347451;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 5px 0;
+}
+
+.class-overview-population small {
+    color: #89958e;
+    font-size: 0.78rem;
+}
+
+.class-section-card {
+    background: #fff;
+    border: 1px solid #e9efeb;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(30, 65, 48, 0.04);
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.class-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 25px;
+    border-bottom: 1px solid #edf1ee;
+    gap: 15px;
+}
+
+.class-section-header h4 {
+    color: #263b32;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.class-section-header h4 i {
+    color: #347451;
+    margin-right: 7px;
+}
+
+.class-section-header p {
+    color: #89958e;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.section-count {
+    color: #347451;
+    background: #edf6f0;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.assigned-staff-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px 25px;
+}
+
+.assigned-staff-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 220px;
+    padding: 12px 15px;
+    background: #f9fbf9;
+    border: 1px solid #edf1ee;
+    border-radius: 10px;
+}
+
+.staff-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #edf6f0;
+    color: #347451;
+    font-size: 1.2rem;
+}
+
+.staff-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.staff-info strong {
+    color: #40564a;
+    font-size: 0.86rem;
+}
+
+.staff-info span {
+    color: #89958e;
+    font-size: 0.77rem;
+}
+
+.section-empty {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    color: #89958e;
+}
+
+.section-empty i {
+    display: block;
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+
+.section-empty p {
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.class-wards-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.class-wards-table thead {
+    background: #f8faf8;
+}
+
+.class-wards-table th {
+    padding: 15px 25px;
+    color: #7b8982;
+    font-size: 0.77rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #edf1ee;
+    white-space: nowrap;
+}
+
+.class-wards-table td {
+    padding: 16px 25px;
+    color: #52635a;
+    font-size: 0.88rem;
+    border-bottom: 1px solid #f0f3f1;
+}
+
+.class-wards-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.class-wards-table tbody tr:hover {
+    background: #fbfdfb;
+}
+
+.ward-name {
+    color: #347451;
+    font-weight: 600;
+}
+
+.muted-text {
+    color: #a0aaa4;
+    font-size: 0.82rem;
+}
+
+.table-empty {
+    text-align: center;
+    padding: 50px 20px !important;
+}
+
+.table-empty i {
+    display: block;
+    color: #a8b9ae;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.table-empty h5 {
+    color: #40564a;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.table-empty p {
+    color: #89958e;
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.class-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 25px;
+    border-top: 1px solid #edf1ee;
+    gap: 15px;
+}
+
+.pagination-info {
+    color: #829087;
+    font-size: 0.82rem;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #e2eae4;
+    border-radius: 7px;
+    color: #347451;
+    text-decoration: none;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(.disabled) {
+    background: #edf6f0;
+    border-color: #c8ddce;
+}
+
+.pagination-btn.disabled {
+    color: #c2cbc5;
+    cursor: not-allowed;
+    background: #fafbfa;
+}
+
+.pagination-current {
+    color: #52635a;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0 8px;
+}
+
+@media (max-width: 768px) {
+    .class-overview-card {
+        flex-wrap: wrap;
+    }
+
+    .class-overview-population {
+        width: 100%;
+        padding: 15px 0 0;
+        border-left: none;
+        border-top: 1px solid #e9efeb;
+        text-align: left;
+    }
+
+    .class-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .class-wards-table th,
+    .class-wards-table td {
+        padding: 14px 15px;
+    }
+
+    .class-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pagination-controls {
+        align-self: flex-end;
+    }
+}

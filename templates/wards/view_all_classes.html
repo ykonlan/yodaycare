@@ -1,0 +1,133 @@
+ {% extends "pages/dashboard.html" %}
+
+{% load static %}
+
+{% block title %}Classrooms | YoDayCare{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'wards/css/view-all-classes.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="classrooms-page">
+
+    <div class="classrooms-header">
+        <div>
+            <h2>Classrooms</h2>
+            <p>View and manage the classrooms within the daycare.</p>
+        </div>
+    </div>
+
+    <div class="classrooms-card">
+
+        <div class="classrooms-card-header">
+            <div>
+                <h4>All Classrooms</h4>
+                <p>Overview of registered classrooms and their populations.</p>
+            </div>
+            <span class="classroom-count">
+                {{ page_obj.paginator.count }} Classroom{{ page_obj.paginator.count|pluralize }}
+            </span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="classrooms-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Classroom Name</th>
+                        <th>Population</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for classroom in classrooms %}
+                        <tr>
+                            <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+
+                            <td>
+                                <a href="{% url 'class-view-by-id' classroom.pk %}"
+                                   class="classroom-link">
+                                    {{ classroom.class_name }}
+                                    <i class="bi bi-arrow-up-right"></i>
+                                </a>
+                            </td>
+
+                            <td>
+                                <span class="population-badge">
+                                    <i class="bi bi-people"></i>
+                                    {{ classroom.current_population }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3" class="empty-state">
+                                <i class="bi bi-building"></i>
+                                <h5>No Classrooms Found</h5>
+                                <p>There are currently no classrooms to display.</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if is_paginated %}
+            <div class="classrooms-pagination">
+
+                <span class="pagination-info">
+                    Showing {{ page_obj.start_index }}–{{ page_obj.end_index }}
+                    of {{ page_obj.paginator.count }} classrooms
+                </span>
+
+                <div class="pagination-controls">
+
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1" class="pagination-btn" title="First page">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </a>
+                        <a href="?page={{ page_obj.previous_page_number }}"
+                           class="pagination-btn">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    {% else %}
+                        <span class="pagination-btn disabled">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </span>
+                        <span class="pagination-btn disabled">
+                            <i class="bi bi-chevron-left"></i>
+                        </span>
+                    {% endif %}
+
+                    <span class="pagination-current">
+                        {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}"
+                           class="pagination-btn">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}"
+                           class="pagination-btn" title="Last page">
+                            <i class="bi bi-chevron-double-right"></i>
+                        </a>
+                    {% else %}
+                        <span class="pagination-btn disabled">
+                            <i class="bi bi-chevron-right"></i>
+                        </span>
+                        <span class="pagination-btn disabled">
+                            <i class="bi bi-chevron-double-right"></i>
+                        </span>
+                    {% endif %}
+
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

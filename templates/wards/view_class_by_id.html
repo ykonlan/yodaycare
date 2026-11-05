@@ -1,0 +1,225 @@
+ {% extends "pages/dashboard.html" %}
+{% load static %}
+
+{% block title %}{{ classroom.class_name }} | YoDayCare{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'wards/css/class-details.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="class-details-page">
+
+    <!-- Page heading -->
+    <div class="class-details-header">
+        <div>
+            <a href="{% url 'classes-view-all' %}" class="back-link">
+                <i class="bi bi-arrow-left"></i> Back to Classrooms
+            </a>
+            <h2>{{ classroom.class_name }}</h2>
+            <p>Classroom information and assigned children.</p>
+        </div>
+    </div>
+
+    <!-- Classroom overview -->
+    <div class="class-overview-card">
+
+        <div class="class-overview-icon">
+            <i class="bi bi-building"></i>
+        </div>
+
+        <div class="class-overview-info">
+            <span>CLASSROOM</span>
+            <h3>{{ classroom.class_name }}</h3>
+            <p>Registered classroom</p>
+        </div>
+
+        <div class="class-overview-population">
+            <span>Current Population</span>
+            <h2>{{ classroom.current_population }}</h2>
+            <small>
+                <i class="bi bi-people"></i>
+                Registered children
+            </small>
+        </div>
+
+    </div>
+
+    <!-- Assigned staff -->
+    <div class="class-section-card">
+
+        <div class="class-section-header">
+            <div>
+                <h4><i class="bi bi-person-badge"></i> Assigned Staff</h4>
+                <p>Staff members assigned to this classroom.</p>
+            </div>
+
+            <span class="section-count">
+                {{ classroom_staff|length }}
+                Staff Member{{ classroom_staff|length|pluralize }}
+            </span>
+        </div>
+
+        <div class="assigned-staff-list">
+
+            {% for profile in classroom_staff %}
+                <div class="assigned-staff-item">
+
+                    <div class="staff-avatar">
+                        <i class="bi bi-person"></i>
+                    </div>
+
+                    <div class="staff-info">
+                        <strong>
+                            {{ profile.staff.get_full_name|default:profile.staff.username }}
+                        </strong>
+                        <span>{{ profile.staff.username }}</span>
+                    </div>
+
+                </div>
+            {% empty %}
+                <div class="section-empty">
+                    <i class="bi bi-person-x"></i>
+                    <p>No staff members are currently assigned to this classroom.</p>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <!-- Children table -->
+    <div class="class-section-card">
+
+        <div class="class-section-header">
+            <div>
+                <h4><i class="bi bi-people"></i> Children</h4>
+                <p>Children currently assigned to this classroom.</p>
+            </div>
+
+            <span class="section-count">
+                {{ page_obj.paginator.count }}
+                Child{{ page_obj.paginator.count|pluralize }}
+            </span>
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="class-wards-table">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Child's Name</th>
+                        <th>Date of Birth</th>
+                        <th>Parent</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for ward in page_obj %}
+                        <tr>
+
+                            <td>
+                                {{ page_obj.start_index|add:forloop.counter0 }}
+                            </td>
+
+                            <td>
+                                <span class="ward-name">
+                                    {{ ward.ward_name }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {% if ward.ward_dob %}
+                                    {{ ward.ward_dob|date:"d M Y" }}
+                                {% else %}
+                                    <span class="muted-text">Not provided</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {{ ward.ward_parent.user.get_full_name|default:ward.ward_parent.user.username }}
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="table-empty">
+                                <i class="bi bi-people"></i>
+                                <h5>No Children Assigned</h5>
+                                <p>There are currently no children in this classroom.</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+            <div class="class-pagination">
+
+                <span class="pagination-info">
+                    Showing {{ page_obj.start_index }}–{{ page_obj.end_index }}
+                    of {{ page_obj.paginator.count }} children
+                </span>
+
+                <div class="pagination-controls">
+
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1" class="pagination-btn">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </a>
+
+                        <a href="?page={{ page_obj.previous_page_number }}"
+                           class="pagination-btn">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    {% else %}
+                        <span class="pagination-btn disabled">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </span>
+                        <span class="pagination-btn disabled">
+                            <i class="bi bi-chevron-left"></i>
+                        </span>
+                    {% endif %}
+
+                    <span class="pagination-current">
+                        {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}"
+                           class="pagination-btn">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+
+                        <a href="?page={{ page_obj.paginator.num_pages }}"
+                           class="pagination-btn">
+                            <i class="bi bi-chevron-double-right"></i>
+                        </a>
+                    {% else %}
+                        <span class="pagination-btn disabled">
+                            <i class="bi bi-chevron-right"></i>
+                        </span>
+                        <span class="pagination-btn disabled">
+                            <i class="bi bi-chevron-double-right"></i>
+                        </span>
+                    {% endif %}
+
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
