@@ -75,14 +75,6 @@
             </div>
         </template>
 
-        {% if messages %}
-            {% for message in messages %}
-                <script>
-                    alert("{{ message|escapejs }}");
-                </script>
-            {% endfor %}
-        {% endif %}
-
     </div>
 
 {% endblock %}

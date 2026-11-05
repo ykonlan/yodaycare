@@ -45,10 +45,12 @@
                 </a>
             {% endif %}
 
-            <a href="{% url 'classes-view-all' %}" class="sidebar-link {% if request.resolver_match.url_name == 'classes-view-all' %} active {% endif %}">
-                <span class="sidebar-icon">▦</span>
-                <span>Classrooms</span>
-            </a>
+            {% if is_daycare_admin %}
+                <a href="{% url 'classes-view-all' %}" class="sidebar-link {% if request.resolver_match.url_name == 'classes-view-all' %} active {% endif %}">
+                    <span class="sidebar-icon">▦</span>
+                    <span>Classrooms</span>
+                </a>
+            {% endif %}
         </div>
 
         <!-- <div class="sidebar-section">
