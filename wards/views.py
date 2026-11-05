@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, UpdateView
-from wards.models import Ward
+from wards.models import Ward, Allergy
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from wards.forms import AddWardForm, AllergyFormSet
@@ -91,7 +91,18 @@ class UpdateWardView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             allergy_formset.save()
 
         return HttpResponseRedirect(self.get_success_url())
-        
+
+class ShowWardView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        ward_id = kwargs["pk"]
+        ward = Ward.objects.filter(id=ward_id).first()
+        ward_allergies = Allergy.objects.filter(allergy_ward=ward)
+        context = {
+            "ward" : ward,
+            "allergies" : ward_allergies
+        }
+        return render(request, "wards/view_only_by_id.html", context)
+
         
 
 

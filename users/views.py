@@ -13,8 +13,8 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from wards.models import Ward, Classroom
-from django.core.paginator import Paginator
-
+from daily_details.models import DailyDetails
+from django.utils import timezone
 
 # Create your views here.
 class AllParentsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -85,9 +85,40 @@ class ProfileDashboard(LoginRequiredMixin, View):
             }
             return render(request, "staff/admin-dashboard.html", context)
         elif user.groups.filter(name="Staff").exists():
-            return render(request, "staff/staff-dashboard.html")
+            staff_class = user.staff_profile.staff_classroom
+            staff_class_wards = Ward.objects.filter(ward_class=staff_class)
+            staff_class_wards_count = staff_class_wards.count()
+            total_wards_count = None
+            if request.user.groups.filter(name="Parents"):
+                staff_wards = Ward.objects.filter(ward_parent=request.user)
+                staff_wards_count = staff_wards.count()
+                staff_class_wards = staff_class_wards.union(staff_wards)
+                total_wards_count = staff_class_wards_count + staff_wards_count
+            reports_completed = DailyDetails.objects.filter(
+                daily_details_date = timezone.localdate(),
+                daily_details_ward__ward_class = staff_class
+            ).count()
+            context = {
+                "total_children" : total_wards_count or staff_class_wards_count,
+                "reports_completed" : reports_completed,
+                "reports_pending" : (staff_class_wards_count - reports_completed),
+                "classroom" : staff_class
+            } 
+            return render(request, "staff/staff-dashboard.html", context)
         elif user.groups.filter(name="Parents").exists():
-            return render(request, "parents/dashboard.html")
+            total_children = Ward.objects.filter(ward_parent=user.profile).count()
+            reports_available = DailyDetails.objects.filter(
+                daily_details_date = timezone.localdate(),
+                daily_details_ward__ward_parent = user.profile
+            ).count()
+            children = Ward.objects.filter(ward_parent=user.profile)
+
+            context = {
+                "total_children" : total_children,
+                "reports_available" : reports_available,
+                "children" : children
+            }
+            return render(request, "parents/dashboard.html", context)
 
 class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):

@@ -1,0 +1,422 @@
+
+/* =====================================
+   WARD DETAILS PAGE
+===================================== */
+
+.ward-detail-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Page heading */
+
+.ward-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.ward-detail-header .page-label {
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.ward-detail-header h1 {
+    font-size: 25px;
+    font-weight: 600;
+    margin: 7px 0;
+}
+
+.ward-detail-header p {
+    font-size: 13px;
+    color: #89918A;
+    margin: 0;
+}
+
+.ward-detail-page .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border: 1px solid #DFEADD;
+    border-radius: 8px;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: 0.2s ease;
+}
+
+.ward-detail-page .back-link:hover {
+    background: #EAF3E9;
+}
+
+/* Main cards */
+
+.ward-detail-page .ward-detail-card {
+    background: white;
+    border: 1px solid #EAEEE9;
+    border-radius: 12px;
+    padding: 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 12px rgba(52, 58, 53, 0.035);
+}
+
+/* Section headings */
+
+.ward-detail-page .ward-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 24px;
+}
+
+.ward-detail-page .section-heading-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #EAF3E9;
+    color: var(--color-primary);
+    border-radius: 11px;
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+.ward-detail-page .ward-section-heading h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 5px;
+}
+
+.ward-detail-page .ward-section-heading p {
+    font-size: 12px;
+    color: #89918A;
+    margin: 0;
+}
+
+/* Ward profile banner */
+
+.ward-detail-page .ward-profile-banner {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: #F7F9F6;
+    border-radius: 10px;
+    margin-bottom: 24px;
+}
+
+.ward-detail-page .ward-avatar {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #DDEBDD;
+    color: var(--color-primary);
+    border-radius: 14px;
+    font-size: 25px;
+    flex-shrink: 0;
+}
+
+.ward-detail-page .ward-profile-banner h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 5px;
+}
+
+.ward-detail-page .ward-profile-banner > div:nth-child(2) span {
+    font-size: 12px;
+    color: #89918A;
+}
+
+.ward-detail-page .registration-badge {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    background: #E8F3ED;
+    color: #57936B;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Ward information grid */
+
+.ward-detail-page .ward-information-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+.ward-detail-page .ward-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #F0F2EF;
+}
+
+.ward-detail-page .ward-info-item span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #89918A;
+    font-size: 12px;
+}
+
+.ward-detail-page .ward-info-item span i {
+    color: var(--color-primary);
+    font-size: 14px;
+}
+
+.ward-detail-page .ward-info-item strong {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+/* Allergy section */
+
+.ward-detail-page .allergy-heading-icon {
+    background: #FBF0E8;
+    color: #C18B5B;
+}
+
+.ward-detail-page .allergy-count {
+    margin-left: auto;
+    padding: 7px 11px;
+    background: #F7F9F6;
+    border-radius: 20px;
+    color: #788078;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Individual allergy card */
+
+.ward-detail-page .allergy-card {
+    border: 1px solid #EAEEE9;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 14px;
+}
+
+.ward-detail-page .allergy-card:last-child {
+    margin-bottom: 0;
+}
+
+.ward-detail-page .allergy-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.ward-detail-page .allergy-substance {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ward-detail-page .allergy-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FBF0E8;
+    color: #C18B5B;
+    border-radius: 10px;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.ward-detail-page .allergy-substance h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 5px;
+}
+
+.ward-detail-page .allergy-substance span {
+    font-size: 11px;
+    color: #89918A;
+}
+
+/* Severity badges */
+
+.ward-detail-page .severity-badge {
+    padding: 7px 11px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ward-detail-page .severity-high {
+    background: #FCE9E7;
+    color: #C65B51;
+}
+
+.ward-detail-page .severity-moderate {
+    background: #FBF0E0;
+    color: #BA853A;
+}
+
+.ward-detail-page .severity-low {
+    background: #E8F3ED;
+    color: #57936B;
+}
+
+/* Allergy details */
+
+.ward-detail-page .allergy-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.ward-detail-page .allergy-info-item {
+    padding: 15px;
+    background: #F8F9F7;
+    border-radius: 8px;
+}
+
+.ward-detail-page .allergy-info-item > span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #788078;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 9px;
+}
+
+.ward-detail-page .allergy-info-item p {
+    font-size: 12px;
+    color: var(--color-text);
+    line-height: 1.7;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.ward-detail-page .treatment-info {
+    background: #FFF9F5;
+}
+
+.ward-detail-page .treatment-info > span {
+    color: #B77B48;
+}
+
+/* No allergies state */
+
+.ward-detail-page .no-allergies {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 35px 15px;
+    background: #F8FAF7;
+    border-radius: 10px;
+}
+
+.ward-detail-page .no-allergies-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #E8F3ED;
+    color: #57936B;
+    border-radius: 50%;
+    font-size: 25px;
+    margin-bottom: 14px;
+}
+
+.ward-detail-page .no-allergies h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 7px;
+}
+
+.ward-detail-page .no-allergies p {
+    font-size: 12px;
+    color: #89918A;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .ward-detail-page .allergy-details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .ward-detail-page .ward-detail-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .ward-detail-page .ward-detail-header h1 {
+        font-size: 22px;
+    }
+
+    .ward-detail-page .ward-detail-card {
+        padding: 18px;
+    }
+
+    .ward-detail-page .ward-information-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .ward-detail-page .ward-profile-banner {
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .ward-detail-page .ward-avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 21px;
+    }
+
+    .ward-detail-page .ward-profile-banner h3 {
+        font-size: 14px;
+    }
+
+    .ward-detail-page .registration-badge {
+        font-size: 9px;
+        padding: 6px 8px;
+    }
+
+    .ward-detail-page .allergy-count {
+        font-size: 9px;
+        padding: 6px 8px;
+    }
+
+    .ward-detail-page .allergy-card {
+        padding: 15px;
+    }
+
+    .ward-detail-page .allergy-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

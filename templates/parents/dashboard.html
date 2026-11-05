@@ -1,1 +1,158 @@
-{% extends "../pages/dashboard.html" %}
+{% extends "pages/dashboard.html" %}
+{% load static %}
+
+{% block title %}Parent Dashboard | YoDayCare{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'users/css/parent-dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="parent-dashboard">
+
+    <!-- Welcome section -->
+    <div class="dashboard-welcome">
+        <div>
+            <span class="welcome-label">PARENT DASHBOARD</span>
+            <h1>Good day, {{ request.user.first_name }}! 👋</h1>
+            <p>Stay connected with your children's activities and wellbeing.</p>
+        </div>
+
+        <div class="welcome-icon">
+            <i class="bi bi-heart-fill"></i>
+        </div>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="parent-stats">
+
+        <div class="parent-stat-card">
+            <div class="stat-icon children-icon">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div>
+                <span>My Children</span>
+                <h2>{{ total_children }}</h2>
+                <small>Children registered under your account</small>
+            </div>
+        </div>
+
+        <div class="parent-stat-card">
+            <div class="stat-icon reports-icon">
+                <i class="bi bi-file-earmark-check-fill"></i>
+            </div>
+            <div>
+                <span>Daily Reports</span>
+                <h2>{{ reports_available }}</h2>
+                <small>Reports available today</small>
+            </div>
+        </div>
+
+        <div class="parent-stat-card">
+            <div class="stat-icon updates-icon">
+                <i class="bi bi-bell-fill"></i>
+            </div>
+            <div>
+                <span>Recent Updates</span>
+                <h2>{{ recent_updates }}</h2>
+                <small>Recent updates about your children</small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Children and quick actions -->
+    <div class="parent-dashboard-grid">
+
+        <!-- My Children -->
+        <section class="parent-card children-card">
+
+            <div class="parent-card-heading">
+                <div>
+                    <h2>My Children</h2>
+                    <p>An overview of your registered children.</p>
+                </div>
+                <i class="bi bi-people"></i>
+            </div>
+
+            <div class="children-list">
+
+                {% for child in children %}
+                    <div class="child-item">
+                        <div class="child-icon">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+
+                        <div class="child-details">
+                            <strong>{{ child.ward_name }}</strong>
+                            <span>{{ child.ward_classroom.class_name }}</span>
+                        </div>
+
+                        <a href="{% url 'view-ward' pk=child.pk %}" 
+                           class="child-arrow">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p class="empty-message">No children registered under your account yet.</p>
+                {% endfor %}
+
+            </div>
+
+            <div class="children-footer">
+                <span>{{ total_children }} Registered Children</span>
+
+                <a href="{% url 'wards-view-all' %}">
+                    View Children
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="parent-card quick-actions-card">
+
+            <div class="parent-card-heading">
+                <div>
+                    <h2>Quick Actions</h2>
+                    <p>Quick access to your children's information.</p>
+                </div>
+                <i class="bi bi-lightning-charge"></i>
+            </div>
+
+            <div class="quick-actions-list">
+
+                <a href="{% url 'wards-view-all' %}" class="quick-action">
+                    <div class="quick-action-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div>
+                        <strong>View My Children</strong>
+                        <span>See your children's profiles and information.</span>
+                    </div>
+                    <i class="bi bi-chevron-right action-arrow"></i>
+                </a>
+
+
+                <a href="#" class="quick-action">
+                    <div class="quick-action-icon">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div>
+                        <strong>My Profile</strong>
+                        <span>View your account information.</span>
+                    </div>
+                    <i class="bi bi-chevron-right action-arrow"></i>
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}

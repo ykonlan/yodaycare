@@ -1,1 +1,137 @@
-{% extends "../pages/dashboard.html" %}
+{% extends "pages/dashboard.html" %}
+{% load static %}
+
+{% block title %}Staff Dashboard | YoDayCare{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'users/css/staff-dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="staff-dashboard">
+
+    <!-- Welcome section -->
+    <div class="dashboard-welcome">
+        <div>
+            <span class="welcome-label">STAFF DASHBOARD</span>
+            <h1>Good day, {{ request.user.first_name }}! 👋</h1>
+            <p>Here's an overview of your classroom and daily activities.</p>
+        </div>
+
+        <div class="welcome-icon">
+            <i class="bi bi-sun"></i>
+        </div>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="staff-stats">
+
+        <div class="staff-stat-card">
+            <div class="stat-icon children-icon">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div>
+                <span>My Children</span>
+                <h2>{{ total_children }}</h2>
+                <small>Children in your classroom (And your wards)</small>
+            </div>
+        </div>
+
+        <div class="staff-stat-card">
+            <div class="stat-icon completed-icon">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <div>
+                <span>Reports Completed</span>
+                <h2>{{ reports_completed }}</h2>
+                <small>Daily reports completed today</small>
+            </div>
+        </div>
+
+        <div class="staff-stat-card">
+            <div class="stat-icon pending-icon">
+                <i class="bi bi-clock-fill"></i>
+            </div>
+            <div>
+                <span>Reports Pending</span>
+                <h2>{{ reports_pending }}</h2>
+                <small>Reports remaining today</small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Classroom and quick actions -->
+    <div class="staff-dashboard-grid">
+
+        <!-- Classroom overview -->
+        <section class="staff-card classroom-card">
+
+            <div class="staff-card-heading">
+                <div>
+                    <h2>My Classroom</h2>
+                    <p>Your assigned classroom overview.</p>
+                </div>
+                <i class="bi bi-building"></i>
+            </div>
+
+            <div class="classroom-details">
+                <div class="classroom-icon">
+                    <i class="bi bi-house-heart-fill"></i>
+                </div>
+
+                <div>
+                    <h3>{{ classroom.class_name }}</h3>
+                    <span>Assigned Classroom</span>
+                </div>
+            </div>
+
+            <div class="classroom-footer">
+                <div>
+                    <span>Registered Children</span>
+                    <strong>{{ total_children }}</strong>
+                </div>
+
+                <a href="{% url 'wards-view-all' %}">
+                    View Children
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+        </section>
+
+        <!-- Quick actions -->
+        <section class="staff-card quick-actions-card">
+
+            <div class="staff-card-heading">
+                <div>
+                    <h2>Quick Actions</h2>
+                    <p>Shortcuts to your daily tasks.</p>
+                </div>
+                <i class="bi bi-lightning-charge"></i>
+            </div>
+
+            <div class="quick-actions-list">
+
+                <a href="{% url 'wards-view-all' %}" class="quick-action">
+                    <div class="quick-action-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div>
+                        <strong>View My Children</strong>
+                        <span>See children assigned to your classroom.</span>
+                    </div>
+                    <i class="bi bi-chevron-right action-arrow"></i>
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

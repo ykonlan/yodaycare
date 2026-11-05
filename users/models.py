@@ -50,7 +50,7 @@ class StaffProfile(models.Model):
     staff_classroom = models.ForeignKey(
         "wards.Classroom",
         verbose_name="Classroom",
-        related_name="staff",
+        related_name="staff_profile",
         on_delete=models.PROTECT
     )
 

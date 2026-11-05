@@ -1,0 +1,168 @@
+
+{% extends "pages/dashboard.html" %}
+{% load static %}
+
+{% block title %}{{ ward.ward_name }} | YoDayCare{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'wards/css/view-only-by-id.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="ward-detail-page">
+
+    <!-- Page heading -->
+    <div class="ward-detail-header">
+        <div>
+            <span class="page-label">CHILD PROFILE</span>
+            <h1>{{ ward.ward_name }}</h1>
+            <p>View your child's personal information and health records.</p>
+        </div>
+
+        <a href="{% url 'wards-view-all' %}" class="back-link">
+            <i class="bi bi-arrow-left"></i>
+            Back to My Children
+        </a>
+    </div>
+
+    <!-- Ward information -->
+    <section class="ward-detail-card">
+
+        <div class="ward-section-heading">
+            <div class="section-heading-icon">
+                <i class="bi bi-person-vcard-fill"></i>
+            </div>
+
+            <div>
+                <h2>Ward Information</h2>
+                <p>Personal details and registration information.</p>
+            </div>
+        </div>
+
+        <div class="ward-profile-banner">
+            <div class="ward-avatar">
+                <i class="bi bi-person-fill"></i>
+            </div>
+
+            <div>
+                <h3>{{ ward.ward_name }}</h3>
+                <span>Registered Child</span>
+            </div>
+
+            <div class="registration-badge">
+                <i class="bi bi-check-circle-fill"></i>
+                Registered
+            </div>
+        </div>
+
+        <div class="ward-information-grid">
+
+            <div class="ward-info-item">
+                <span><i class="bi bi-person"></i> Full Name</span>
+                <strong>{{ ward.ward_name }}</strong>
+            </div>
+
+            <div class="ward-info-item">
+                <span><i class="bi bi-calendar-heart"></i> Date of Birth</span>
+                <strong>
+                    {% if ward.ward_dob %}
+                        {{ ward.ward_dob|date:"d F, Y" }}
+                    {% else %}
+                        Not provided
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="ward-info-item">
+                <span><i class="bi bi-building"></i> Classroom</span>
+                <strong>
+                    {{ ward.ward_class.class_name|default:"Not assigned" }}
+                </strong>
+            </div>
+
+            <div class="ward-info-item">
+                <span><i class="bi bi-calendar-check"></i> Date Registered</span>
+                <strong>{{ ward.ward_date_added|date:"d F, Y" }}</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Allergy information -->
+    <section class="ward-detail-card allergy-section">
+
+        <div class="ward-section-heading">
+            <div class="section-heading-icon allergy-heading-icon">
+                <i class="bi bi-heart-pulse-fill"></i>
+            </div>
+
+            <div>
+                <h2>Allergy Information</h2>
+                <p>Important health information and emergency precautions.</p>
+            </div>
+
+            <span class="allergy-count">
+                {{ allergies|length }} Registered
+            </span>
+        </div>
+
+        {% for allergy in allergies %}
+
+            <div class="allergy-card">
+
+                <div class="allergy-card-header">
+                    <div class="allergy-substance">
+                        <div class="allergy-icon">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        </div>
+
+                        <div>
+                            <h3>{{ allergy.allergy_substance }}</h3>
+                            <span>Registered allergy</span>
+                        </div>
+                    </div>
+
+                    <span class="severity-badge severity-{{ allergy.allergy_severity }}">
+                        {{ allergy.get_allergy_severity_display }} Severity
+                    </span>
+                </div>
+
+                <div class="allergy-details-grid">
+
+                    <div class="allergy-info-item">
+                        <span>Expected Reaction</span>
+                        <p>{{ allergy.allergy_reaction }}</p>
+                    </div>
+
+                    <div class="allergy-info-item treatment-info">
+                        <span>
+                            <i class="bi bi-shield-exclamation"></i>
+                            Emergency Treatment / Precautions
+                        </span>
+                        <p>{{ allergy.allergy_immediate_treatment|linebreaksbr }}</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="no-allergies">
+                <div class="no-allergies-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+
+                <h3>No Registered Allergies</h3>
+                <p>There are currently no allergies recorded for {{ ward.ward_name }}.</p>
+            </div>
+
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endblock %}
