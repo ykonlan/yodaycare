@@ -18,19 +18,22 @@
             {% endif %}
         </div>
 
-        <table>
+        <table id="app-table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Full Name</th>
                     <th>Ward Class</th>
+                    <th>Date of Birth</th>
                     <th>Ward Parent</th>
+                    <th>Parent Phone</th>
+                    <th>Date Added</th>
                     <th>Actions</th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for ward in wards %}
+                <!-- {% for ward in wards %}
                     <tr>
                         <td>{{ ward.id }}</td>
 
@@ -77,9 +80,9 @@
                         <td colspan="5">No wards found.</td>
                     </tr>
                 {% endfor %}
-            </tbody>
+            </tbody> -->
         </table>
-        {% if is_paginated %}
+        <!-- {% if is_paginated %}
             <nav class="pagination-container" aria-label="Wards pagination">
                 <ul class="pagination">
 
@@ -120,7 +123,7 @@
 
                 </ul>
             </nav>
-        {% endif %}
+        {% endif %} -->
 
     </div>
 
@@ -200,4 +203,37 @@
 
 {% block extra_js %}
     <script src="{% static 'wards/js/view-all-wards.js' %}" defer></script>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            new DataTable('#app-table', {
+
+                processing: true,
+                serverSide: true,
+
+                ajax: {
+                    url: '/wards/apis/all/',
+                    type: 'GET'
+                },
+
+                columns: [
+                    { data: 'id' },
+                    { data: 'ward_name' },
+                    { data: 'ward_class' },
+                    { data: 'ward_dob' , orderable : false},
+                    { data: 'ward_parent_name' },
+                    { data: 'ward_parent_phone' , orderable : false},
+                    { data: 'ward_date_added' },
+                    {
+                        data: 'actions',
+                        orderable: false,
+                        searchable: false,
+                    }
+                ]
+
+            });
+
+        });
+    </script>
 {% endblock %}
