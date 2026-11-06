@@ -30,101 +30,8 @@
                     <th>Date Added</th>
                     <th>Actions</th>
                 </tr>
-            </thead>
-
-            <tbody>
-                <!-- {% for ward in wards %}
-                    <tr>
-                        <td>{{ ward.id }}</td>
-
-                        {% if is_daycare_admin %}
-                            <td>
-                                <a href="{% url 'update-ward' pk=ward.id %}">
-                                    {{ ward.ward_name }}
-                                </a>
-                            </td>
-                            {% else %}
-                                <td>
-                                    {{ ward.ward_name }}
-                                </td>
-                        {% endif %}
-
-                        <td>{{ ward.ward_class }}</td>
-
-                        {% if is_daycare_admin %}
-                            <td>
-                                <a href="{% url 'update-parent' pk=ward.ward_parent.id %}">
-                                    {{ ward.ward_parent }}
-                                </a>
-                            </td>
-                            {% else %}
-                                <td>
-                                    {{ ward.ward_parent }}
-                                </td>
-                        {% endif %}
-
-                        <td>
-                            {% if is_daycare_admin or is_daycare_staff %}
-                                <a href="{% url 'add-daily-report' ward_id=ward.id %}">
-                                    <button type="button">Fill Daily Deets</button>
-                                </a>
-                            {% endif %}
-
-                            <a href="{% url 'view-daily-report' pk=ward.id %}">
-                                <button type="button">View Daily Deets</button>
-                            </a>
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="5">No wards found.</td>
-                    </tr>
-                {% endfor %}
-            </tbody> -->
+            </thead>                
         </table>
-        <!-- {% if is_paginated %}
-            <nav class="pagination-container" aria-label="Wards pagination">
-                <ul class="pagination">
-
-                    {% if page_obj.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page=1">First</a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link"
-                            href="?page={{ page_obj.previous_page_number }}">
-                                Previous
-                            </a>
-                        </li>
-                    {% endif %}
-
-                    <li class="page-item active">
-                        <span class="page-link">
-                            Page {{ page_obj.number }} of {{ paginator.num_pages }}
-                        </span>
-                    </li>
-
-                    {% if page_obj.has_next %}
-                        <li class="page-item">
-                            <a class="page-link"
-                            href="?page={{ page_obj.next_page_number }}">
-                                Next
-                            </a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link"
-                            href="?page={{ paginator.num_pages }}">
-                                Last
-                            </a>
-                        </li>
-                    {% endif %}
-
-                </ul>
-            </nav>
-        {% endif %} -->
-
     </div>
 
         <!-- Add Ward Modal -->
@@ -207,15 +114,43 @@
     <script defer>
         document.addEventListener('DOMContentLoaded', function () {
 
-            new DataTable('#app-table', {
+            window.wardsTable = new DataTable('#app-table', {
 
                 processing: true,
-                serverSide: true,
+                // serverSide: true,
 
                 ajax: {
                     url: '/wards/apis/all/',
                     type: 'GET'
                 },
+
+                buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+
+                searchBuilder: {
+                preDefined: false
+                },
+
+                layout: {
+                    top1: 'searchBuilder',
+                    topStart: [
+                        'pageLength',
+                        {
+                            buttons: [
+                                'copy',
+                                'csv',
+                                'excel',
+                                'pdf',
+                                'print'
+                            ]
+                        }
+                    ],
+                    topEnd: 'search',
+                    bottomStart: 'info',
+                    bottomEnd: 'paging'
+                },
+
 
                 columns: [
                     { data: 'id' },
@@ -233,6 +168,7 @@
                 ]
 
             });
+
 
         });
     </script>

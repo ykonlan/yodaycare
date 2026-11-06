@@ -23,10 +23,11 @@ class AllWardsAPI(LoginRequiredMixin, View):
         order_field = request.GET.get(column_mapping[order_column], "id")
         order_dir = request.GET.get("order[0][dir]", "asc")
         data = []
-        wards = get_user_wards(request.user)
-        total_records = wards.count()
+        all_wards = get_user_wards(request.user)
+        wards = all_wards
+        total_records = all_wards.count()
         if search_value != "":
-            wards = wards.filter(
+            wards = all_wards.filter(
                 Q(ward_name__icontains=search_value ) |
                 Q(id__icontains=search_value ) |
                 Q(ward_parent__user__first_name__icontains=search_value ) |
@@ -65,9 +66,41 @@ class AllWardsAPI(LoginRequiredMixin, View):
                 "actions" : actions
             })
         return JsonResponse(
-            {"draw" : draw,
-             "recordsTotal" : total_records,
-             "recordsFiltered" : records_filtered,
-             "data" : data
+            {
+                "draw" : draw,
+                "recordsTotal" : total_records,
+                "recordsFiltered" : records_filtered,
+                "data" : data,
+                # "searchBuilder": {
+                #     "options": {
+                #         "ward_name": [
+                #             {"label": name, "value": name} for name in all_wards.order_by("ward_name")
+                #                 .values_list("ward_name", flat=True)
+                #                 .distinct()
+                #         ],
+                #         "ward_class": [
+                #             {"label": name, "value": name} for name in all_wards.exclude(ward_class__isnull=True)
+                #                 .order_by("ward_class__class_name")
+                #                 .values_list("ward_class__class_name", flat=True)
+                #                 .distinct()
+                #         ],
+                #         "id": [
+                #             {"label": ward_id, "value": ward_id} for ward_id in all_wards.order_by("id")
+                #                 .values_list("id", flat=True)
+                #                 .distinct()
+                #         ],
+                #         "ward_date_added": [
+                #             {"label": date.strftime("%Y-%m-%d"), "value": date.strftime("%Y-%m-%d")} for date in all_wards.order_by("ward_date_added")
+                #             .values_list("ward_date_added", flat=True)
+                #             .distinct()
+                #         ],
+                #         "ward_dob": [
+                #             {"label": date.strftime("%Y-%m-%d"), "value": date.strftime("%Y-%m-%d")} for date in all_wards.order_by("ward_dob")
+                #             .values_list("ward_dob", flat=True)
+                #             .distinct()
+                #             if date is not None
+                #         ],
+                #     }
+                # }
             }
         )

@@ -14,8 +14,11 @@
         rel="stylesheet"
     >
 
-    <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
 
     <!-- Google Fonts -->
     <link
@@ -31,47 +34,76 @@
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
     <link rel="stylesheet" href="{% static 'css/toast.css' %}">
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/dt-3.1.5/datatables.min.css">
-    <script src="https://cdn.datatables.net/v/dt/dt-3.1.5/datatables.min.js"></script>
+    <!-- DataTables Core CSS -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.datatables.net/v/dt/dt-3.1.5/datatables.min.css"
+    >
 
-    
+    <!-- DateTime CSS -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.datatables.net/datetime/2.1.3/css/dataTables.dateTime.min.css"
+    >
+
+    <!-- SearchBuilder CSS -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.datatables.net/searchbuilder/2.1.1/css/searchBuilder.dataTables.min.css"
+    >
+
+    <!-- Buttons CSS -->
+    <link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/buttons/4.1.3/css/buttons.dataTables.min.css">
+
     {% block extra_css %}{% endblock %}
 </head>
 
 <body>
-    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
-    {% for message in messages %}
-        <div class="toast toast-{{ message.tags }} shadow-sm mb-2"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-            data-bs-delay="4000">
 
-            <div class="toast-header">
-                {% if message.tags == "success" %}
-                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                {% elif message.tags == "error" %}
-                    <i class="bi bi-exclamation-circle-fill text-danger me-2"></i>
-                {% else %}
-                    <i class="bi bi-info-circle-fill text-primary me-2"></i>
-                {% endif %}
+    <!-- Toast Messages -->
+    <div class="toast-container position-fixed top-0 end-0 p-3"
+         style="z-index: 1100;">
 
-                <strong class="me-auto">
-                    {{ message.tags|capfirst }}
-                </strong>
+        {% for message in messages %}
+            <div class="toast toast-{{ message.tags }} shadow-sm mb-2"
+                 role="alert"
+                 aria-live="assertive"
+                 aria-atomic="true"
+                 data-bs-delay="4000">
 
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="toast"></button>
+                <div class="toast-header">
+
+                    {% if message.tags == "success" %}
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                    {% elif message.tags == "error" %}
+                        <i class="bi bi-exclamation-circle-fill text-danger me-2"></i>
+                    {% else %}
+                        <i class="bi bi-info-circle-fill text-primary me-2"></i>
+                    {% endif %}
+
+                    <strong class="me-auto">
+                        {{ message.tags|capfirst }}
+                    </strong>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="toast">
+                    </button>
+
+                </div>
+
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+
             </div>
-
-            <div class="toast-body">
-                {{ message }}
-            </div>
-        </div>
         {% endfor %}
+
     </div>
 
+    <!-- Application Layout -->
     <div class="app-container">
 
         {% include "components/sidebar.html" %}
@@ -91,20 +123,46 @@
 
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Toast Initialization -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-        const toastElements = document.querySelectorAll(".toast");
 
-        toastElements.forEach(function (toastElement) {
-            const toast = new bootstrap.Toast(toastElement);
-            toast.show();
-        });
+            const toastElements = document.querySelectorAll(".toast");
+
+            toastElements.forEach(function (toastElement) {
+                const toast = new bootstrap.Toast(toastElement);
+                toast.show();
+            });
+
         });
     </script>
 
-    {% block extra_js %}
-        
-    {% endblock %}
+    <!-- DataTables Core JS -->
+    <script src="https://cdn.datatables.net/v/dt/dt-3.1.5/datatables.min.js"></script>
+
+    <!-- DateTime JS -->
+    <script src="https://cdn.datatables.net/datetime/2.1.3/js/dataTables.dateTime.min.js"></script>
+
+    <!-- SearchBuilder JS -->
+    <script src="https://cdn.datatables.net/searchbuilder/2.1.1/js/dataTables.searchBuilder.min.js"></script>
+
+    <!-- Buttons Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <!-- Buttons core -->
+    <script src="https://cdn.datatables.net/buttons/4.1.3/js/dataTables.buttons.min.js"></script>
+
+    <!-- Export buttons -->
+    <script src="https://cdn.datatables.net/buttons/4.1.3/js/buttons.html5.min.js"></script>
+
+    <!-- Print button -->
+    <script src="https://cdn.datatables.net/buttons/4.1.3/js/buttons.print.min.js"></script>    <!-- Page-specific JavaScript -->
+    {% block extra_js %}{% endblock %}
 
 </body>
 </html>
