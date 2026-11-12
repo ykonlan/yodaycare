@@ -16,87 +16,21 @@
             <button id="add-staff" type="button">Add Staff</button>
         </div>
 
-        <table>
+        <table id="app-table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th>Full Name</th>
                     <th>Classroom</th>
                     <th>Email</th>
                     <th>Phone #1</th>
                     <th>Phone #2</th>
+                    <th>Date Joined</th>
                 </tr>
             </thead>
 
-            <tbody>
-                {% for staf in list %}
-                    <tr>
-                        <td>{{ staf.id }}</td>
-
-                        <td>
-                            <a href="{% url 'update-staff' pk=staf.id %}">
-                                {{ staf.first_name }}
-                            </a>
-                        </td>
-
-                        <td>{{ staf.last_name }}</td>
-                        <td>{{ staf.staff_profile.staff_classroom }}</td>
-                        <td>{{ staf.email }}</td>
-                        <td>{{ staf.profile.user_phone_1 }}</td>
-                        <td>{{ staf.profile.user_phone_2 }}</td>
-                    </tr>
-
-                {% empty %}
-                    <tr>
-                        <td colspan="7">No staff members found.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
         </table>
-        {% if is_paginated %}
-            <nav class="pagination-container" aria-label="Staff pagination">
-                <ul class="pagination">
-
-                    {% if page_obj.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page=1">First</a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link"
-                            href="?page={{ page_obj.previous_page_number }}">
-                                Previous
-                            </a>
-                        </li>
-                    {% endif %}
-
-                    <li class="page-item active">
-                        <span class="page-link">
-                            Page {{ page_obj.number }} of {{ paginator.num_pages }}
-                        </span>
-                    </li>
-
-                    {% if page_obj.has_next %}
-                        <li class="page-item">
-                            <a class="page-link"
-                            href="?page={{ page_obj.next_page_number }}">
-                                Next
-                            </a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link"
-                            href="?page={{ paginator.num_pages }}">
-                                Last
-                            </a>
-                        </li>
-                    {% endif %}
-
-                </ul>
-            </nav>
-        {% endif %}
-
+        
     </div>
 
         <!-- Add Staff Modal -->
@@ -168,4 +102,62 @@
 
 {% block extra_js %}
     <script src="{% static 'users/js/view-all-staff.js' %}" defer></script>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            window.wardsTable = new DataTable('#app-table', {
+
+                processing: true,
+                // serverSide: true,
+
+                ajax: {
+                    url: "{% url 'all-staff-api' %}",
+                    type: 'GET'
+                },
+
+                serverSide: false,
+                buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+
+                searchBuilder: {
+                preDefined: false
+                },
+
+                layout: {
+                    top1: 'searchBuilder',
+                    topStart: [
+                        'pageLength',
+                        {
+                            buttons: [
+                                'copy',
+                                'csv',
+                                'excel',
+                                'pdf',
+                                'print'
+                            ]
+                        }
+                    ],
+                    topEnd: 'search',
+                    bottomStart: 'info',
+                    bottomEnd: 'paging'
+                },
+
+
+                columns: [
+                    { data: 'id' },
+                    { data: 'full_name' },
+                    { data: 'staff_classroom' },
+                    { data: 'email' },
+                    { data: 'user_phone_1' , orderable : false},
+                    { data: 'user_phone_2' , orderable : false},
+                    { data: 'date_added' },
+                ]
+
+            });
+
+
+        });
+    </script>
 {% endblock %}
