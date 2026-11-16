@@ -1,0 +1,115 @@
+
+{% extends "base.html" %}
+
+{% block title %}Daily Attendance | YoDayCare{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h3 class="fw-semibold mb-1">Daily Attendance</h3>
+        <p class="text-muted mb-0">
+            Mark the attendance of wards in your classroom.
+        </p>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="fw-semibold mb-1">Attendance Register</h5>
+                    <p class="text-muted small mb-0">
+                        {{ classroom.class_name }}
+                    </p>
+                </div>
+                <span class="badge bg-light text-dark border">
+                    {{ wards|length }} Wards
+                </span>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    {{ today|date:'l, j F Y' }}
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ward</th>
+                                <th class="text-center">Present</th>
+                                <th class="text-center">Absent</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for ward in wards %}
+                            <tr>
+                                <td>
+                                    <span class="fw-medium">
+                                        {{ ward.ward_name }}
+                                    </span>
+                                </td>
+
+                                <td class="text-center">
+                                    <input
+                                        type="radio"
+                                        class="form-check-input"
+                                        name="attendance_{{ ward.id }}"
+                                        value="present"
+                                        id="present_{{ ward.id }}"
+                                        required
+                                        {% if ward.attendance_status == "present" %}
+                                            checked
+                                        {% endif %}
+                                    >
+                                </td>
+
+                                <td class="text-center">
+                                    <input
+                                        type="radio"
+                                        class="form-check-input"
+                                        name="attendance_{{ ward.id }}"
+                                        value="absent"
+                                        id="absent_{{ ward.id }}"
+                                        {% if ward.attendance_status == "absent" %}
+                                            checked
+                                        {% endif %}
+                                    >
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center py-4 text-muted">
+                                    No wards found in this classroom.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if wards %}
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Submit Attendance
+                    </button>
+                </div>
+                {% endif %}
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

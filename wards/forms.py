@@ -1,5 +1,5 @@
 from django import forms
-from wards.models import Ward, Allergy
+from wards.models import Ward, Allergy, Attendance
 from users.models import UserProfile
 
 class AddWardForm(forms.ModelForm):

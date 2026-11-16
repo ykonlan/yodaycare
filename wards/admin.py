@@ -5,3 +5,4 @@ import wards.models as WardModels
 admin.site.register(WardModels.Ward)
 admin.site.register(WardModels.Allergy)
 admin.site.register(WardModels.Classroom)
+admin.site.register(WardModels.Attendance)

@@ -2,9 +2,8 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from wards.validators import validator_for_name
 from datetime import date
-from django.urls import reverse_lazy
-from django.shortcuts import redirect
-
+from django.utils import timezone
+from django.contrib.auth.models import User
 # Create your models here.
 class Classroom(models.Model):
     class_population = models.IntegerField(
@@ -93,3 +92,43 @@ class Allergy(models.Model):
 
     def __str__(self):
         return f"{self.allergy_substance} ({self.allergy_ward.ward_name})"
+
+class Attendance(models.Model):
+    attendance_ward = models.ForeignKey(
+        Ward,
+        on_delete=models.CASCADE,
+        related_name="attendance_records",
+        verbose_name="Ward"
+    )
+
+    attendance_date = models.DateField(
+        default=timezone.localdate,
+        verbose_name="Date"
+    )
+
+    choices = [
+        ("present", "Present"),
+        ("absent", "Absent") 
+    ]
+
+    attendance_status = models.CharField(
+        choices=choices,
+        default="absent",
+        max_length=9
+    )
+
+    attendance_staff = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name="staff_responsible",
+        verbose_name="Staff",
+        null=True
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["attendance_ward", "attendance_date"],
+                name="unique_ward_attendance_per_day"
+            )
+        ]

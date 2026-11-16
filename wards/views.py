@@ -1,18 +1,19 @@
 from django.shortcuts import render
 from django.views.generic import ListView, UpdateView
-from wards.models import Ward, Allergy, Classroom
+from wards.models import Ward, Allergy, Classroom, Attendance
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from wards.forms import AddWardForm, AllergyFormSet
 from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.template.response import TemplateResponse
 from django.http import HttpResponseRedirect
 from django.db.models import Count
 from users.models import StaffProfile
 from django.core.paginator import Paginator
+from django.utils import timezone
 
 # Create your views here.
 class AllWardsView(LoginRequiredMixin, ListView):
@@ -138,7 +139,50 @@ class ShowClassView(LoginRequiredMixin, UserPassesTestMixin, View):
             "is_paginated" : page_obj.has_other_pages()
         }
         return render(request, "wards/view_class_by_id.html", context)
-    
+
+
+class MarkWardsAttendance(LoginRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.groups.filter(name="Staff").exists()
+
+    def get(self, request, *args, **kwargs):
+        today = timezone.localdate()
+        staff_class = request.user.staff_profile.staff_classroom
+        wards = Ward.objects.filter(ward_class=staff_class)
+        existing_records = Attendance.objects.filter(
+            attendance_date = today,
+            attendance_ward__ward_class = staff_class
+        )
+        attendance_map = {
+            record.attendance_ward_id : record.attendance_status for record in existing_records
+        }
+        for ward in wards:
+            ward.attendance_status = attendance_map.get(ward.id)
+        context = {
+            "wards" : wards,
+            "classroom" : staff_class,
+            "today" : timezone.localdate(),
+        }
+        return render(request, "staff/mark_attendance.html", context)
+
+    def post(self, request, *args, **kwargs):
+        staff_class = request.user.staff_profile.staff_classroom
+        wards = Ward.objects.filter(ward_class=staff_class)
+        today = timezone.localdate()
+        for ward in wards:
+            status = request.POST.get(f"attendance_{ward.id}")
+            record, created =  Attendance.objects.update_or_create(
+                    attendance_ward = ward,
+                    attendance_date  = today,
+                    defaults={
+                            "attendance_status": status,
+                            "attendance_staff": request.user
+                        }
+                )
+        if record:
+            messages.success(request, f"Attendance marked for class {staff_class} for date {today}")
+        return redirect(reverse("mark-attendance"))
+
     
 
     
