@@ -1,0 +1,313 @@
+
+{% extends "base.html" %}
+
+{% block title %}Classroom General Report{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Classroom General Report</h3>
+            <p class="text-muted mb-0">
+                An overview of your classroom's activities and reports.
+            </p>
+        </div>
+
+        <button class="btn btn-outline-primary" onclick="window.print()">
+            <i class="bi bi-printer me-2"></i>Print Report
+        </button>
+    </div>
+
+    <!-- Classroom information -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+                <span class="text-muted small">CURRENT CLASSROOM</span>
+                <h4 class="fw-bold mb-1">{{ classroom.class_name }}</h4>
+                <span class="text-muted small">Classroom reporting overview</span>
+            </div>
+            <div>
+                <span class="text-muted small d-block">Reporting period</span>
+                <strong>November 2026</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date filter -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label">From</label>
+                    <input type="date" name="date_from"
+                           value="{{ request.GET.date_from }}"
+                           class="form-control">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">To</label>
+                    <input type="date" name="date_to"
+                           value="{{ request.GET.date_to }}"
+                           class="form-control">
+                </div>
+
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Apply Filter</button>
+                    <a href="{{ request.path }}" class="btn btn-outline-secondary">Reset</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <span class="text-muted small">Children enrolled</span>
+                    <h3 class="fw-bold mt-2 mb-0">24</h3>
+                    <small class="text-muted">Currently assigned</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <span class="text-muted small">Average attendance</span>
+                    <h3 class="fw-bold mt-2 mb-0">87%</h3>
+                    <small class="text-success">For selected period</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <span class="text-muted small">Reports submitted</span>
+                    <h3 class="fw-bold mt-2 mb-0">96</h3>
+                    <small class="text-muted">Across all children</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <span class="text-muted small">Reports outstanding</span>
+                    <h3 class="fw-bold mt-2 mb-0">24</h3>
+                    <small class="text-warning">Require completion</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reporting completion -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                    <h5 class="fw-bold mb-1">Report completion</h5>
+                    <p class="text-muted small mb-0">
+                        Submitted reports compared with expected reports.
+                    </p>
+                </div>
+                <h4 class="fw-bold text-primary mb-0">80%</h4>
+            </div>
+
+            <div class="progress mt-3" style="height:12px;">
+                <div class="progress-bar bg-primary" style="width:80%"></div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-2">
+                <small class="text-muted">96 submitted</small>
+                <small class="text-muted">24 outstanding</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-3 mb-4">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-1">Attendance trend</h5>
+                    <p class="text-muted small">Number of children present each day</p>
+                    <div style="height:290px;">
+                        <canvas id="staffAttendanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-1">Report observations</h5>
+                    <p class="text-muted small">Categories recorded in daily reports</p>
+                    <div style="height:290px;">
+                        <canvas id="staffObservationsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wellbeing and activities -->
+    <div class="row g-3 mb-4">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Health and wellbeing</h5>
+
+                    <div class="d-flex justify-content-between py-3 border-bottom">
+                        <span class="text-muted">Health observations</span>
+                        <strong>8</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between py-3 border-bottom">
+                        <span class="text-muted">Incidents recorded</span>
+                        <strong>2</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between py-3">
+                        <span class="text-muted">Children with observations</span>
+                        <strong>6</strong>
+                    </div>
+
+                    <a href="#" class="btn btn-outline-primary btn-sm mt-2">
+                        View relevant reports
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Classroom activities</h5>
+
+                    <div class="d-flex justify-content-between py-3 border-bottom">
+                        <span class="text-muted">Learning activities</span>
+                        <strong>42</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between py-3 border-bottom">
+                        <span class="text-muted">Outdoor activities</span>
+                        <strong>28</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between py-3">
+                        <span class="text-muted">Creative activities</span>
+                        <strong>26</strong>
+                    </div>
+
+                    <p class="text-muted small mt-2 mb-0">
+                        Activity counts are based on entries in submitted daily reports.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Children reporting status -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="mb-3">
+                <h5 class="fw-bold mb-1">Children's reporting status</h5>
+                <p class="text-muted small mb-0">
+                    Review report submissions for individual children.
+                </p>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Child</th>
+                            <th>Reports submitted</th>
+                            <th>Expected</th>
+                            <th>Completion</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Child One</td>
+                            <td>18</td>
+                            <td>20</td>
+                            <td>
+                                <span class="badge bg-success-subtle text-success">90%</span>
+                            </td>
+                            <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>Child Two</td>
+                            <td>16</td>
+                            <td>20</td>
+                            <td>
+                                <span class="badge bg-warning-subtle text-warning">80%</span>
+                            </td>
+                            <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>Child Three</td>
+                            <td>20</td>
+                            <td>20</td>
+                            <td>
+                                <span class="badge bg-success-subtle text-success">100%</span>
+                            </td>
+                            <td><a href="#" class="btn btn-sm btn-outline-primary">View</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    new Chart(document.getElementById('staffAttendanceChart'), {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+            datasets: [{
+                label: 'Children present',
+                data: [21, 23, 20, 22, 21],
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                fill: true,
+                tension: 0.35
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, max: 24 } }
+        }
+    });
+
+    new Chart(document.getElementById('staffObservationsChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Meals', 'Sleep', 'Activities', 'Health', 'Behaviour'],
+            datasets: [{
+                label: 'Recorded entries',
+                data: [90, 85, 96, 8, 15],
+                backgroundColor: '#2563eb',
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+</script>
+{% endblock %}

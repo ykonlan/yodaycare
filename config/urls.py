@@ -27,5 +27,6 @@ urlpatterns = [
     path("dashboard", ProfileDashboard.as_view(), name="dashboard"),
     path("wards/", include("wards.urls")),
     path("daily-details/", include("daily_details.urls")),
-    path("logout/", LogoutView.as_view(), name="logout")
+    path("logout/", LogoutView.as_view(), name="logout"),
+    path("pages/", include("pages.urls")),
 ]

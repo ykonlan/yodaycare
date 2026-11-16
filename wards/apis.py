@@ -54,6 +54,10 @@ class AllWardsAPI(LoginRequiredMixin, View):
                 actions += f"""<a href="{reverse('add-daily-report', kwargs={'ward_id':ward.id})}"><button type="button">Fill Daily Report</button>
                 """
 
+            if request.user.groups.filter(name="Parents").exists():
+                actions += f"""<a href="{reverse('view-general-report-parent', kwargs={'ward_id':ward.id})}"><button type="button">Fill Daily Report</button>
+                """
+
             data.append({
                 "id" : ward.id,
                 "ward_name" : ward_name_html,

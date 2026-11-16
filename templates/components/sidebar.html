@@ -53,14 +53,20 @@
             {% endif %}
         </div>
 
-        <!-- <div class="sidebar-section">
-            <span class="sidebar-heading">RECORDS</span>
+        {% if is_daycare_admin or is_daycare_staff %}
+            <div class="sidebar-section">
+                <span class="sidebar-heading">REPORTING</span>
 
-            <a href="#" class="sidebar-link">
-                <span class="sidebar-icon">▤</span>
-                <span>Daily Details</span>
-            </a>
-        </div> -->
+                {% if is_daycare_admin %}
+                    <a href="{% url 'view-general-report-admin' %}" class="sidebar-link">
+                {% elif is_daycare_staff %}
+                    <a href="{% url 'view-general-report-staff' %}" class="sidebar-link"></a> 
+                {% endif %}
+                    <span class="sidebar-icon">▤</span>
+                    <span>General Report</span>
+                </a>
+            </div>
+        {% endif %}
 
     </nav>
 

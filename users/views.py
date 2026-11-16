@@ -91,8 +91,8 @@ class ProfileDashboard(LoginRequiredMixin, View):
             staff_class_wards = Ward.objects.filter(ward_class=staff_class)
             staff_class_wards_count = staff_class_wards.count()
             total_wards_count = None
-            if request.user.groups.filter(name="Parents"):
-                staff_wards = Ward.objects.filter(ward_parent=request.user)
+            if user.groups.filter(name="Parents").exists():
+                staff_wards = Ward.objects.filter(ward_parent=user)
                 staff_wards_count = staff_wards.count()
                 staff_class_wards = staff_class_wards.union(staff_wards)
                 total_wards_count = staff_class_wards_count + staff_wards_count
