@@ -14,6 +14,7 @@ from django.db.models import Count
 from users.models import StaffProfile
 from django.core.paginator import Paginator
 from django.utils import timezone
+from datetime import datetime
 
 # Create your views here.
 class AllWardsView(LoginRequiredMixin, ListView):
@@ -183,7 +184,57 @@ class MarkWardsAttendance(LoginRequiredMixin, UserPassesTestMixin, View):
             messages.success(request, f"Attendance marked for class {staff_class} for date {today}")
         return redirect(reverse("mark-attendance"))
 
-    
+
+class ViewWardsAttendance(LoginRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.groups.filter(name="Administrators").exists()
+
+    def get(self, request, *args, **kwargs):
+        today = timezone.localdate()
+        date_string = request.GET.get("date")
+        date = datetime.strptime(date_string, "%Y-%m-%d").date() if date_string else today
+        class_id = request.GET.get("classroom")
+        status = request.GET.get("status")
+        selected_class = None
+        if class_id:
+            selected_class = Classroom.objects.filter(id=class_id).first()
+        active_wards = None
+        present_count = None
+        absent_count = None
+        attendance_records = None
+        pending_count = None
+        print(selected_class)
+        if not selected_class:
+            active_wards = Ward.objects.filter(ward_status="active").count()
+            present_count = Attendance.objects.filter(attendance_date=date, attendance_status="present").count()
+            absent_count = Attendance.objects.filter(attendance_date=date, attendance_status="absent").count()
+            pending_count = active_wards - (present_count + absent_count)
+            attendance_records = Attendance.objects.filter(attendance_date=date)
+        else:
+            active_wards = Ward.objects.filter(ward_status="active", ward_class=selected_class).count()
+            present_count = Attendance.objects.filter(attendance_date=date, attendance_status="present", attendance_ward__ward_class=selected_class).count()
+            absent_count = Attendance.objects.filter(attendance_date=date, attendance_status="absent", attendance_ward__ward_class=selected_class).count()
+            pending_count = active_wards - (present_count + absent_count)
+            attendance_records = Attendance.objects.filter(attendance_date=date,attendance_ward__ward_class=selected_class)
+
+        if status and status in ("present", "absent"):
+            attendance_records = attendance_records.filter(attendance_status=status)
+        classrooms = Classroom.objects.all()
+        print(absent_count)
+        print(present_count)
+        print(pending_count)
+        context = {
+            "total_wards" : active_wards,
+            "present_count" : present_count,
+            "absent_count" : absent_count,
+            "pending_count" : pending_count,
+            "classrooms" : classrooms,
+            "attendance_records" : attendance_records,
+            "selected_classroom" : selected_class.id if selected_class else None,
+            "selected_date" : date,
+            "selected_status" : status
+        }
+        return render(request, "staff/admin_view_attendance.html", context)
 
     
 

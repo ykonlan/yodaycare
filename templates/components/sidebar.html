@@ -52,12 +52,20 @@
                 </a>
             {% endif %}
 
-            {% if is_daycare_staff %}
+            {% if is_daycare_admin %}
+                <a href="{% url 'view-attendance' %}" class="sidebar-link {% if request.resolver_match.url_name == 'view-attendance' %} active {% endif %}">
+                    <span class="sidebar-icon">▦</span>
+                    <span>Attendance</span>
+                </a>
+
+            {% elif is_daycare_staff %}
                 <a href="{% url 'mark-attendance' %}" class="sidebar-link {% if request.resolver_match.url_name == 'mark-attendance' %} active {% endif %}">
                     <span class="sidebar-icon">▦</span>
                     <span>Attendance</span>
                 </a>
             {% endif %}
+
+            
         </div>
 
         {% if is_daycare_admin or is_daycare_staff %}

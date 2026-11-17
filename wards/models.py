@@ -34,6 +34,16 @@ class Ward(models.Model):
         default=date.today
     )
 
+    status_choices = [
+        ("active", "Active"),
+        ("inactive", "Inactive"),
+    ]
+    ward_status = models.CharField(
+        max_length=9,
+        choices=status_choices,
+        default="active"
+    )
+
     ward_parent = models.ForeignKey(
         "users.UserProfile",
         verbose_name="Parent",

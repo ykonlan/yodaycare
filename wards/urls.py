@@ -1,5 +1,5 @@
 from django.urls import path
-from wards.views import AllWardsView, CreateNewWard, UpdateWardView, ShowWardView, AllClassroomsView, ShowClassView, MarkWardsAttendance
+from wards.views import AllWardsView, CreateNewWard, UpdateWardView, ShowWardView, AllClassroomsView, ShowClassView, MarkWardsAttendance, ViewWardsAttendance
 from wards.apis import AllWardsAPI
 
 urlpatterns = [
@@ -11,5 +11,6 @@ urlpatterns = [
     path("classes/<int:pk>", ShowClassView.as_view(), name="class-view-by-id"),
     path("apis/all/", AllWardsAPI.as_view(), name="all-wards-api"),
     path("attendance/", MarkWardsAttendance.as_view(), name="mark-attendance"),
+    path("attendance/view/", ViewWardsAttendance.as_view(), name="view-attendance"),
     
 ]
