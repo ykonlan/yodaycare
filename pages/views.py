@@ -2,8 +2,13 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.views import View
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from wards.models import Ward, Allergy
-from daily_details.models import Nap, Meal, Med
+from wards.models import Ward, Allergy, Classroom, Attendance
+from daily_details.models import Nap
+from users.models import StaffProfile
+from django.utils import timezone
+from django.db.models import Q
+from datetime import datetime
+from daily_details.models import DailyDetails
 
 # Create your views here.
 
@@ -50,9 +55,73 @@ class SeeGeneralReportAdminView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.groups.filter(name="Administrators").exists()
 
     def get(self, request, *args, **kwargs):
+        today = timezone.localdate()
+        date_from_input = request.GET.get("date_from")
+        date_from = datetime.strptime(date_from_input, '%Y-%m-%d').date() if (date_from_input and date_from_input != "") else None
+        date_to_input = request.GET.get("date_to")
+        date_to = datetime.strptime(date_to_input, '%Y-%m-%d').date() if (date_to_input and date_to_input != "") else today
+        total_children = Ward.objects.filter(ward_status="active")
+        total_classrooms = Classroom.objects.filter()
+        total_active_staff = StaffProfile.objects.filter(staff__is_active=True)
+        day_total_present = Attendance.objects.filter(attendance_status="present", attendance_date=today).count()
+        day_total_children = total_children.count()
+        day_percentage = (day_total_present / day_total_children) * 100
+        total_daily_reports = DailyDetails.objects.filter(daily_details_date=today)
+        total_daily_reports_count = total_daily_reports.count()
+        day_dd_percentage = (total_daily_reports_count / day_total_children) * 100
+        
+
+        percentages = 0
+        dd_percentages = 0
+        dd_submitted = 0
+        dd_expected = 0
+        
+        if date_from:
+            days = (date_to - date_from).days + 1
+            for i in range(days):
+                cur_date = date_from + timezone.timedelta(days=i)
+                cur_day_total_children = total_children.filter(
+                    Q(ward_date_added__lt=cur_date)&
+                    (Q(ward_status="active") | (Q(ward_status="inactive") & Q(ward_date_removed__gte=cur_date)))
+                ).count()
+
+                day_total_daily_reports_filled = DailyDetails.objects.filter(
+                    daily_details_date = cur_date
+                ).count()
+
+                day_present_count = Attendance.objects.filter(
+                    attendance_date = cur_date,
+                    attendance_status = "present",
+                    attendance_ward__in = total_children
+                ).count()
+
+
+
+                percentages += (day_present_count / cur_day_total_children) * 100
+                dd_percentages += (day_total_daily_reports_filled / cur_day_total_children) * 100
+                dd_submitted += day_total_daily_reports_filled
+                dd_expected += cur_day_total_children
+
+
+
+        average_percentage_attendance = (percentages / days) if date_from else day_percentage
+        average_dd_filled_percentage = (dd_percentages / days) if date_from else day_dd_percentage
+        dd_submitted = dd_submitted if date_from else total_daily_reports_count
+        dd_expected = dd_expected if date_from else day_total_children
+        
+
         context = {
-            
+            "total_children" : total_children.count(),
+            "total_classrooms" : total_classrooms.count(),
+            "total_staff" : total_active_staff.count(),
+            "average_attendance" : average_percentage_attendance,
+            "average_dd_filled" : average_dd_filled_percentage,
+            "dd_submitted" : dd_submitted,
+            "dd_expected" : dd_expected,
+            "dd_outstanding" : dd_expected - dd_submitted
         }
+
+        print(context)
         return render(request, "staff/general_report_admin.html", context)
     
 

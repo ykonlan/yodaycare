@@ -18,6 +18,25 @@ class Classroom(models.Model):
         max_length=100
     )
 
+    class_status = models.CharField(
+        choices=[
+            ("active", "Active"),
+            ("inactive", "Inactive"),
+        ],
+        default="active",
+        max_length=9
+    )
+
+    class_date_added = models.DateField(
+        verbose_name="Date Added",
+        default=date.today
+    )
+
+    class_date_removed = models.DateField(
+        verbose_name="Date Removed",
+        null=True
+    )
+
     def __str__(self):
         return self.class_name
 
@@ -32,6 +51,11 @@ class Ward(models.Model):
     ward_date_added = models.DateField(
         verbose_name="Date Added",
         default=date.today
+    )
+
+    ward_date_removed = models.DateField(
+        verbose_name="Date Withdrawn",
+        null=True
     )
 
     status_choices = [

@@ -203,7 +203,6 @@ class ViewWardsAttendance(LoginRequiredMixin, UserPassesTestMixin, View):
         absent_count = None
         attendance_records = None
         pending_count = None
-        print(selected_class)
         if not selected_class:
             active_wards = Ward.objects.filter(ward_status="active").count()
             present_count = Attendance.objects.filter(attendance_date=date, attendance_status="present").count()
@@ -220,9 +219,6 @@ class ViewWardsAttendance(LoginRequiredMixin, UserPassesTestMixin, View):
         if status and status in ("present", "absent"):
             attendance_records = attendance_records.filter(attendance_status=status)
         classrooms = Classroom.objects.all()
-        print(absent_count)
-        print(present_count)
-        print(pending_count)
         context = {
             "total_wards" : active_wards,
             "present_count" : present_count,
