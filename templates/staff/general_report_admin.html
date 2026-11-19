@@ -107,7 +107,7 @@
             </div>
 
             <div class="d-flex justify-content-between mt-2">
-                <small class="text-muted">{{dd_submitted}} expected</small>
+                <small class="text-muted">{{dd_submitted}} submitted</small>
                 <small class="text-muted">{{dd_outstanding}} pending</small>
             </div>
         </div>
@@ -115,21 +115,23 @@
 
     <!-- Charts -->
     <div class="row g-3 mb-4">
-        <div class="col-lg-7">
+        <div class="col-lg-12">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="fw-bold mb-1">Institution attendance trend</h5>
+                    <h5 class="fw-bold mb-1">YoDayCare attendance trend</h5>
                     <p class="text-muted small">
                         Daily attendance across all classrooms.
                     </p>
-                    <div style="height:290px;">
-                        <canvas id="adminAttendanceChart"></canvas>
+                    <div style="width: 100%; overflow-x: auto;">
+                        <div id="admin-chart-container" style="height:290px;">
+                            <canvas id="adminAttendanceChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-5">
+        <!-- <div class="col-lg-5">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <h5 class="fw-bold mb-1">Report observations</h5>
@@ -141,7 +143,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!-- Classroom comparison -->
@@ -280,15 +282,30 @@
 
 </div>
 
+{{ chart_attendance_labels|json_script:"attendance-labels" }}
+{{ chart_attendance_data|json_script:"attendance-data" }}
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    const labels = JSON.parse(
+    document.getElementById('attendance-labels').textContent
+    );
+
+    const attendanceData = JSON.parse(
+        document.getElementById('attendance-data').textContent
+    );
+
+    const chartContainer = document.getElementById('admin-chart-container');
+
+    chartContainer.style.width = `${Math.max(700, labels.length * 60)}px`;
+
     new Chart(document.getElementById('adminAttendanceChart'), {
         type: 'line',
         data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+            labels: labels,
             datasets: [{
-                label: 'Children present',
-                data: [105, 110, 103, 108, 107],
+                label: 'Ward Attendance %',
+                data: attendanceData,
                 borderColor: '#2563eb',
                 backgroundColor: 'rgba(37, 99, 235, 0.1)',
                 fill: true,
@@ -298,7 +315,7 @@
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { beginAtZero: true, max: 120 } }
+            scales: { y: { beginAtZero: true, max: 100 } }
         }
     });
 

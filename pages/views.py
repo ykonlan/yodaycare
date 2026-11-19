@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.db.models import Q
 from datetime import datetime
 from daily_details.models import DailyDetails
+from pages.models import Holiday
 
 # Create your views here.
 
@@ -69,17 +70,24 @@ class SeeGeneralReportAdminView(LoginRequiredMixin, UserPassesTestMixin, View):
         total_daily_reports = DailyDetails.objects.filter(daily_details_date=today)
         total_daily_reports_count = total_daily_reports.count()
         day_dd_percentage = (total_daily_reports_count / day_total_children) * 100
-        
-
-        percentages = 0
+        average_percentage_attendance = None
+        attendance_days = []
+        percentages = []
         dd_percentages = 0
         dd_submitted = 0
         dd_expected = 0
+        initial_date = date_from or (date_to - timezone.timedelta(days=6))
+        holidays = set(Holiday.objects.filter(holiday_date__range=[initial_date, date_to]).values_list("holiday_date", flat=True))
         
         if date_from:
-            days = (date_to - date_from).days + 1
-            for i in range(days):
+            days = 0
+            period_days = (date_to - date_from).days + 1
+            for i in range(max(period_days, 0)):
                 cur_date = date_from + timezone.timedelta(days=i)
+                if cur_date in holidays:
+                    continue
+                days += 1
+
                 cur_day_total_children = total_children.filter(
                     Q(ward_date_added__lt=cur_date)&
                     (Q(ward_status="active") | (Q(ward_status="inactive") & Q(ward_date_removed__gte=cur_date)))
@@ -97,17 +105,52 @@ class SeeGeneralReportAdminView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 
-                percentages += (day_present_count / cur_day_total_children) * 100
+                percentages.append((day_present_count / cur_day_total_children) * 100)
+                attendance_days.append(f"{cur_date.strftime('%a, %d %b')}")
                 dd_percentages += (day_total_daily_reports_filled / cur_day_total_children) * 100
                 dd_submitted += day_total_daily_reports_filled
                 dd_expected += cur_day_total_children
 
 
 
-        average_percentage_attendance = (percentages / days) if date_from else day_percentage
-        average_dd_filled_percentage = (dd_percentages / days) if date_from else day_dd_percentage
+        average_percentage_attendance = (sum(percentages) / len(percentages) if percentages else 0) if date_from else day_percentage
+        average_dd_filled_percentage = (dd_percentages / days if days else 0) if date_from else day_dd_percentage
         dd_submitted = dd_submitted if date_from else total_daily_reports_count
         dd_expected = dd_expected if date_from else day_total_children
+
+        attendance_percentages = percentages if date_from else []
+        if not attendance_percentages:
+            i = 0
+            j = 0
+            while j < 5:
+                cur_date = initial_date + timezone.timedelta(days=i)
+                i += 1
+                if cur_date > date_to:
+                    break
+                if cur_date.weekday() >= 5:
+                    continue
+                if cur_date in holidays:
+                    continue
+
+                cur_date_total_children = total_children.filter(
+                    Q(ward_date_added__lt=cur_date)&
+                    (Q(ward_status="active") | (Q(ward_status="inactive") & Q(ward_date_removed__gte=cur_date)))
+                ).count()
+                
+                if cur_date_total_children == 0:
+                    continue
+
+                cur_date_present = Attendance.objects.filter(
+                    attendance_date = cur_date,
+                    attendance_status = "present",
+                    attendance_ward__in = total_children
+                ).count()
+
+                attendance_percentages.append((cur_date_present / cur_date_total_children) * 100)
+                attendance_days.append(f"{cur_date.strftime('%a, %d %b')}")
+                j += 1
+                
+
         
 
         context = {
@@ -118,10 +161,11 @@ class SeeGeneralReportAdminView(LoginRequiredMixin, UserPassesTestMixin, View):
             "average_dd_filled" : average_dd_filled_percentage,
             "dd_submitted" : dd_submitted,
             "dd_expected" : dd_expected,
-            "dd_outstanding" : dd_expected - dd_submitted
+            "dd_outstanding" : dd_expected - dd_submitted,
+            "chart_attendance_data" : attendance_percentages,
+            "chart_attendance_labels" : attendance_days
         }
 
-        print(context)
         return render(request, "staff/general_report_admin.html", context)
     
 
